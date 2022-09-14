@@ -198,7 +198,8 @@ ul.task-list li input[type="checkbox"] {
 <section id="personal-information-shared-by-github-copilot" class="level3">
 <h3 class="anchored" data-anchor-id="personal-information-shared-by-github-copilot">Personal information shared by GitHub Copilot</h3>
 <p>One aspect we discovered was that GitHub Copilot would inadvertantly share information that would be considered personal, such as people’s names, phone numbers, emails, etc. This was something Mazen and I explored further. Here are a few examples of this.</p>
-<p>In a Python file, simply asking it to create a function to list author names indeed gives the name of a person that exist: <img src="https://media.discordapp.net/attachments/806360771038019669/860317676390580224/unknown.png" class="img-fluid"></p>
+<p>In a Python file, simply asking it to create a function to list author names indeed gives the name of a person that exist:</p>
+<p><img src="https://media.discordapp.net/attachments/806360771038019669/860317676390580224/unknown.png" class="img-fluid"></p>
 <p>Mark demonstrated an example when writing a bash script when an actual person’s name was suggested in an autocompletion <a href="https://www.twitch.tv/marksaroufim/clip/ScrumptiousTangiblePastaDogFace-2bOqEL6P5pYl_ALK">here</a>.</p>
 <p>Interestingly, this method did not work for returning other types of information like phone numbers:</p>
 <p><img src="https://media.discordapp.net/attachments/806360771038019669/860319889410752542/unknown.png" class="img-fluid"></p>
@@ -214,7 +215,8 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="multi-lingual-capabilities-of-github-copilot" class="level3">
 <h3 class="anchored" data-anchor-id="multi-lingual-capabilities-of-github-copilot">Multi-lingual capabilities of GitHub Copilot</h3>
-As we mentioned before, GitHub Copilot performs best when you provide it with comments explaining your intent. Therefore, Mazen and I wanted to explore how well GitHub Copilot can perform with comments in various languages. I have used Google Translate to translate my English comments to various languages and observe how well it performed. Let’s go over an example. Below, I give GitHub Copilot the prompt to “Add two numbers” and see what Python code it suggests:
+<p>As we mentioned before, GitHub Copilot performs best when you provide it with comments explaining your intent. Therefore, Mazen and I wanted to explore how well GitHub Copilot can perform with comments in various languages. I have used Google Translate to translate my English comments to various languages and observe how well it performed. Let’s go over an example. Below, I give GitHub Copilot the prompt to “Add two numbers” and see what Python code it suggests:</p>
+<div>
 
 <style>
     table {
@@ -289,7 +291,7 @@ Arabic
 
 </table>
 <p>Of course, if you comment with English, GitHub Copilot provides a good suggestion. It gives us an adding function as well as some use-cases. But as demonstrated in these experiments, the quality of GitHub Copilot suggestions when given comments in other languages likely is correlated with the overall frequency of these languages in the training data. It’s likely that Mandarin and Spanish is more common than Arabic in the training set, so GitHub Copilot performs better with Mandarin and Spanish comments. Of course, this is a single example (although I observed similar results with other prompts). However, given that it’s well-established that biases in the training data are reflected in the output of any ML algorithm (unless it is appropriately counteracted), I think it is safe to assume that GitHub Copilot will likely be less useful for non-English-speaking users.</p>
-</section>
+</div></section>
 <section id="copyrightlicensing-issues" class="level3">
 <h3 class="anchored" data-anchor-id="copyrightlicensing-issues">Copyright/licensing issues</h3>
 <p>Let’s move on to the elephant in the room: copyright/licensing issues. GitHub Copilot/Codex was trained on all public GitHub code, regardless of license (<a href="https://twitter.com/NoraDotCodes/status/1412741339771461635">confirmed</a> by GitHub). While <a href="https://juliareda.eu/2021/07/github-copilot-is-not-infringing-your-copyright/">some argue</a> that training on copyrighted code is not an issue, it becomes much more challenging to argue that when Copilot is <a href="https://twitter.com/mitsuhiko/status/1410886329924194309">regurgitating public code verbatim</a> <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. According to GitHub, Copilot repeats code snippets verbatim about 0.1% of the time. They have also provided a more in-depth study <a href="https://github.co/copilot-research-recitation">here</a>. Thankfully they are currently developing origin tracker that tells where the verbatim code is coming from and allows you to decide whether to include proper attribution or not use that code altogether.</p>
