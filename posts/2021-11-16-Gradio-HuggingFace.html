@@ -8,7 +8,7 @@
 
 <meta name="description" content="“Learn about easy ML app development”">
 
-<title>tanishq_blog - “Gradio + HuggingFace Spaces: A Tutorial”</title>
+<title>tanishq_blog - Gradio + HuggingFace Spaces: A Tutorial</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -175,7 +175,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">“Gradio + HuggingFace Spaces: A Tutorial”</h1>
+<h1 class="title">Gradio + HuggingFace Spaces: A Tutorial</h1>
   <div class="quarto-categories">
     <div class="quarto-category">deep learning</div>
   </div>
@@ -306,30 +306,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {labels[i]: <span class="bu">float</span>(probs[i]) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(labels))}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Finally, let’s import Gradio and use it’s functionality to make an interface and launch it. Note that if you are doing this from a notebook, the Gradio demo will also show up within the notebook for you to try interactively (here I just show screenshots).</p>
-<p>::: {.cell 0=‘h’ 1=‘i’ 2=‘d’ 3=‘e’ 4=’_’ 5=‘o’ 6=‘u’ 7=‘t’ 8=‘p’ 9=‘u’ 10=‘t’ execution_count=4}</p>
+<div class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> gradio <span class="im">as</span> gr</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>gr.Interface(fn<span class="op">=</span>predict, inputs<span class="op">=</span>gr.inputs.Image(shape<span class="op">=</span>(<span class="dv">512</span>, <span class="dv">512</span>)), outputs<span class="op">=</span>gr.outputs.Label(num_top_classes<span class="op">=</span><span class="dv">3</span>)).launch(share<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>/home/tmabraham/anaconda3/envs/blog/lib/python3.9/site-packages/paramiko/transport.py:236: CryptographyDeprecationWarning: Blowfish has been deprecated
-  "class": algorithms.Blowfish,</code></pre>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Running on local URL:  http://127.0.0.1:7860/
-Running on public URL: https://45690.gradio.app
-
-This share link expires in 72 hours. For free permanent hosting, check out Spaces (https://huggingface.co/spaces)</code></pre>
-</div>
-<div class="cell-output cell-output-display">
-
-        <iframe width="900" height="500" src="https://45690.gradio.app" frameborder="0" allowfullscreen=""></iframe>
-        
-</div>
-<div class="cell-output cell-output-display" data-execution_count="4">
-<pre><code>(&lt;fastapi.applications.FastAPI at 0x7f3e38823d90&gt;,
- 'http://127.0.0.1:7860/',
- 'https://45690.gradio.app')</code></pre>
-</div>
-<p>:::</p>
 <pre><code>Running on local URL:  http://127.0.0.1:7860/
 Running on public URL: https://10290.gradio.app
 
@@ -345,52 +325,32 @@ This share link will expire in 72 hours. To get longer links, send an email to: 
 <p>Gradio has lots of features that we can use to customize our app. Let’s go over a few of these features and add them to our demo. All of these features are arguments for the instantiation of the <code>Interface</code> class.</p>
 <p>First of all, we can pass in a title and description for our app which goes at the top before our input and output components:</p>
 <div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>title <span class="op">=</span> <span class="st">"Pet Breed Classifier"</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>description <span class="op">=</span> <span class="st">"A pet breed classifier trained on the Oxford Pets dataset with fastai. Created as a demo for Gradio and HuggingFace Spaces."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>title <span class="op">=</span> <span class="st">"Pet Breed Classifier"</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>description <span class="op">=</span> <span class="st">"A pet breed classifier trained on the Oxford Pets dataset with fastai. Created as a demo for Gradio and HuggingFace Spaces."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can also put a link at the bottom of our demo. Here I will link to this blog post:</p>
 <div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>article<span class="op">=</span><span class="st">"&lt;p style='text-align: center'&gt;&lt;a href='https://tmabraham.github.io/blog/gradio_hf_spaces_tutorial' target='_blank'&gt;Blog post&lt;/a&gt;&lt;/p&gt;"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>article<span class="op">=</span><span class="st">"&lt;p style='text-align: center'&gt;&lt;a href='https://tmabraham.github.io/blog/gradio_hf_spaces_tutorial' target='_blank'&gt;Blog post&lt;/a&gt;&lt;/p&gt;"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can also provide some example inputs that people can try out. Here I have provided an example Siamese cat image, which is in the same directory as my code:</p>
 <div class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>examples <span class="op">=</span> [<span class="st">'siamese.jpg'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>examples <span class="op">=</span> [<span class="st">'siamese.jpg'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Another interesting feature that Gradio has is the ability for interpretation so that users can understand what parts of the input are responsible for the output. We’ll use the default interpretation function provided by Gradio but you can use your own as well:</p>
 <div class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>interpretation<span class="op">=</span><span class="st">'default'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>interpretation<span class="op">=</span><span class="st">'default'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Note that the default interpretation function needs <code>scikit-image</code> to be installed. More information on the interpretation feature is provided <a href="https://gradio.app/advanced_features/">here</a>.</p>
 <p>Gradio also provides a screenshotting feature that can make it really easy to share your examples and results with others. It is enabled by default.</p>
 <p>Finally, Gradio also supports serving of inference requests with a queue. This can be helpful when your app receives a significant amount of traffic. We’ll enable a queue here:</p>
 <div class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>enable_queue<span class="op">=</span><span class="va">True</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>enable_queue<span class="op">=</span><span class="va">True</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You can also add custom CSS for your Gradio app but we’ll not do that here (my CSS skills are essentially non-existent! 😂). Additionally, you can set <code>live=True</code> so that it will automatically submit when you make a change to the input, but removes the Submit button so I won’t use it for now.</p>
 <p>Let’s put it all together and make our interface with these additional features:</p>
-<p>::: {.cell 0=‘h’ 1=‘i’ 2=‘d’ 3=‘e’ 4=’_’ 5=‘o’ 6=‘u’ 7=‘t’ 8=‘p’ 9=‘u’ 10=‘t’ execution_count=10}</p>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>gr.Interface(fn<span class="op">=</span>predict,inputs<span class="op">=</span>gr.inputs.Image(shape<span class="op">=</span>(<span class="dv">512</span>, <span class="dv">512</span>)),outputs<span class="op">=</span>gr.outputs.Label(num_top_classes<span class="op">=</span><span class="dv">3</span>),title<span class="op">=</span>title,description<span class="op">=</span>description,article<span class="op">=</span>article,examples<span class="op">=</span>examples,interpretation<span class="op">=</span>interpretation,enable_queue<span class="op">=</span>enable_queue).launch(share<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>/home/tmabraham/anaconda3/envs/blog/lib/python3.9/site-packages/gradio/interface.py:419: UserWarning: The `enable_queue` parameter in the `Interface`will be deprecated and may not work properly. Please use the `enable_queue` parameter in `launch()` instead
-  warnings.warn(</code></pre>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>gr.Interface(fn<span class="op">=</span>predict,inputs<span class="op">=</span>gr.inputs.Image(shape<span class="op">=</span>(<span class="dv">512</span>, <span class="dv">512</span>)),outputs<span class="op">=</span>gr.outputs.Label(num_top_classes<span class="op">=</span><span class="dv">3</span>),title<span class="op">=</span>title,description<span class="op">=</span>description,article<span class="op">=</span>article,examples<span class="op">=</span>examples,interpretation<span class="op">=</span>interpretation,enable_queue<span class="op">=</span>enable_queue).launch(share<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Running on local URL:  http://127.0.0.1:7861/
-Running on public URL: https://26985.gradio.app
-
-This share link expires in 72 hours. For free permanent hosting, check out Spaces (https://huggingface.co/spaces)</code></pre>
-</div>
-<div class="cell-output cell-output-display">
-
-        <iframe width="900" height="500" src="https://26985.gradio.app" frameborder="0" allowfullscreen=""></iframe>
-        
-</div>
-<div class="cell-output cell-output-display" data-execution_count="10">
-<pre><code>(&lt;fastapi.applications.FastAPI at 0x7f3e38823d90&gt;,
- 'http://127.0.0.1:7861/',
- 'https://26985.gradio.app')</code></pre>
-</div>
-<p>:::</p>
 <pre><code>Running on local URL:  http://127.0.0.1:7861/
 Running on public URL: https://30513.gradio.app
 
@@ -401,26 +361,26 @@ This share link will expire in 72 hours. To get longer links, send an email to: 
  'https://30513.gradio.app')</code></pre>
 <p>Check the Gradio <a href="https://gradio.app/docs">documentation</a> for more information on how to customize your interface.</p>
 <p>Let’s put it all into one file which we name <code>app.py</code>:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> gradio <span class="im">as</span> gr</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastai.vision.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> skimage</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> load_learner(<span class="st">'export.pkl'</span>)</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> learn.dls.vocab</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict(img):</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    img <span class="op">=</span> PILImage.create(img)</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    pred,pred_idx,probs <span class="op">=</span> learn.predict(img)</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {labels[i]: <span class="bu">float</span>(probs[i]) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(labels))}</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>title <span class="op">=</span> <span class="st">"Pet Breed Classifier"</span></span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>description <span class="op">=</span> <span class="st">"A pet breed classifier trained on the Oxford Pets dataset with fastai. Created as a demo for Gradio and HuggingFace Spaces."</span></span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>article<span class="op">=</span><span class="st">"&lt;p style='text-align: center'&gt;&lt;a href='https://tmabraham.github.io/blog/gradio_hf_spaces_tutorial' target='_blank'&gt;Blog post&lt;/a&gt;&lt;/p&gt;"</span></span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>examples <span class="op">=</span> [<span class="st">'siamese.jpg'</span>]</span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>interpretation<span class="op">=</span><span class="st">'default'</span></span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>enable_queue<span class="op">=</span><span class="va">True</span></span>
-<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>gr.Interface(fn<span class="op">=</span>predict,inputs<span class="op">=</span>gr.inputs.Image(shape<span class="op">=</span>(<span class="dv">512</span>, <span class="dv">512</span>)),outputs<span class="op">=</span>gr.outputs.Label(num_top_classes<span class="op">=</span><span class="dv">3</span>),title<span class="op">=</span>title,description<span class="op">=</span>description,article<span class="op">=</span>article,examples<span class="op">=</span>examples,interpretation<span class="op">=</span>interpretation,enable_queue<span class="op">=</span>enable_queue).launch()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> gradio <span class="im">as</span> gr</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastai.vision.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> skimage</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> load_learner(<span class="st">'export.pkl'</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> learn.dls.vocab</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict(img):</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    img <span class="op">=</span> PILImage.create(img)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    pred,pred_idx,probs <span class="op">=</span> learn.predict(img)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {labels[i]: <span class="bu">float</span>(probs[i]) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(labels))}</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>title <span class="op">=</span> <span class="st">"Pet Breed Classifier"</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>description <span class="op">=</span> <span class="st">"A pet breed classifier trained on the Oxford Pets dataset with fastai. Created as a demo for Gradio and HuggingFace Spaces."</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>article<span class="op">=</span><span class="st">"&lt;p style='text-align: center'&gt;&lt;a href='https://tmabraham.github.io/blog/gradio_hf_spaces_tutorial' target='_blank'&gt;Blog post&lt;/a&gt;&lt;/p&gt;"</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>examples <span class="op">=</span> [<span class="st">'siamese.jpg'</span>]</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>interpretation<span class="op">=</span><span class="st">'default'</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>enable_queue<span class="op">=</span><span class="va">True</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>gr.Interface(fn<span class="op">=</span>predict,inputs<span class="op">=</span>gr.inputs.Image(shape<span class="op">=</span>(<span class="dv">512</span>, <span class="dv">512</span>)),outputs<span class="op">=</span>gr.outputs.Label(num_top_classes<span class="op">=</span><span class="dv">3</span>),title<span class="op">=</span>title,description<span class="op">=</span>description,article<span class="op">=</span>article,examples<span class="op">=</span>examples,interpretation<span class="op">=</span>interpretation,enable_queue<span class="op">=</span>enable_queue).launch()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Let’s also make a <code>requirements.txt</code> file which will allow us to install the packages that we need in whatever environment we need:</p>
 <pre><code>fastai
 scikit-image</code></pre>
@@ -460,18 +420,18 @@ git push</code></pre>
 </div>
 <p>If you are a more advanced user with expertise in web development, you might be interested to know that there is an API available for any Gradio interface (there is a “view the api” link at the bottom of the interface). For example, <a href="https://hf.space/embed/tmabraham/fastai_pet_classifier/api">here</a> is a link to the API docs for my interface. This provides much more flexibility, like interacting with your model very easily in code. For example, here I can take any image URL and get a pet breed prediction with my model.</p>
 <div class="cell" data-execution_count="35">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> gradio <span class="im">as</span> gr</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Image</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.core.display <span class="im">import</span> HTML </span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>image_url <span class="op">=</span> <span class="st">'https://petkeen.com/wp-content/uploads/2021/05/grey-cat.jpeg'</span></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> gr.processing_utils.encode_url_or_file_to_base64(image_url)</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> requests.post(url<span class="op">=</span><span class="st">'https://hf.space/embed/tmabraham/fastai_pet_classifier/+/api/predict/'</span>, json<span class="op">=</span>{<span class="st">"data"</span>:[data]})</span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"The breed of this pet is a </span><span class="sc">{</span>(<span class="st">' '</span>.join(r.json()[<span class="st">'data'</span>][<span class="dv">0</span>][<span class="st">'label'</span>].split(<span class="st">'_'</span>)))<span class="sc">}</span><span class="ss">:"</span>)</span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>display(Image(url<span class="op">=</span>image_url, width<span class="op">=</span><span class="dv">475</span>))</span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Original JSON returned from the request: '</span>, json.dumps(r.json(), indent<span class="op">=</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> gradio <span class="im">as</span> gr</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Image</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.core.display <span class="im">import</span> HTML </span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>image_url <span class="op">=</span> <span class="st">'https://petkeen.com/wp-content/uploads/2021/05/grey-cat.jpeg'</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> gr.processing_utils.encode_url_or_file_to_base64(image_url)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> requests.post(url<span class="op">=</span><span class="st">'https://hf.space/embed/tmabraham/fastai_pet_classifier/+/api/predict/'</span>, json<span class="op">=</span>{<span class="st">"data"</span>:[data]})</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"The breed of this pet is a </span><span class="sc">{</span>(<span class="st">' '</span>.join(r.json()[<span class="st">'data'</span>][<span class="dv">0</span>][<span class="st">'label'</span>].split(<span class="st">'_'</span>)))<span class="sc">}</span><span class="ss">:"</span>)</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>display(Image(url<span class="op">=</span>image_url, width<span class="op">=</span><span class="dv">475</span>))</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Original JSON returned from the request: '</span>, json.dumps(r.json(), indent<span class="op">=</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>The breed of this pet is a British Shorthair:</code></pre>
 </div>
