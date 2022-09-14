@@ -70,6 +70,7 @@ Let's dive into each of these issues further.
 One aspect we discovered was that GitHub Copilot would inadvertantly share information that would be considered personal, such as people's names, phone numbers, emails, etc. This was something Mazen and I explored further. Here are a few examples of this.
 
 In a Python file, simply asking it to create a function to list author names indeed gives the name of a person that exist:
+
 ![](https://media.discordapp.net/attachments/806360771038019669/860317676390580224/unknown.png)
 
 Mark demonstrated an example when writing a bash script when an actual person's name was suggested in an autocompletion [here](https://www.twitch.tv/marksaroufim/clip/ScrumptiousTangiblePastaDogFace-2bOqEL6P5pYl_ALK).
@@ -101,6 +102,8 @@ So this confirms that indeed private information was available in the training s
 ### Multi-lingual capabilities of GitHub Copilot
 
 As we mentioned before, GitHub Copilot performs best when you provide it with comments explaining your intent. Therefore, Mazen and I wanted to explore how well GitHub Copilot can perform with comments in various languages. I have used Google Translate to translate my English comments to various languages and observe how well it performed. Let's go over an example. Below, I give GitHub Copilot the prompt to "Add two numbers" and see what Python code it suggests:
+
+<div>
 <style>
     table {
     text-align: center
@@ -148,6 +151,7 @@ As we mentioned before, GitHub Copilot performs best when you provide it with co
     </tr>
   </tbody>
 </table>
+
 
 Of course, if you comment with English, GitHub Copilot provides a good suggestion. It gives us an adding function as well as some use-cases. But as demonstrated in these experiments, the quality of GitHub Copilot suggestions when given comments in other languages likely is correlated with the overall frequency of these languages in the training data. It's likely that Mandarin and Spanish is more common than Arabic in the training set, so GitHub Copilot performs better with Mandarin and Spanish comments. Of course, this is a single example (although I observed similar results with other prompts). However, given that it's well-established that biases in the training data are reflected in the output of any ML algorithm (unless it is appropriately counteracted), I think it is safe to assume that GitHub Copilot will likely be less useful for non-English-speaking users.
 
