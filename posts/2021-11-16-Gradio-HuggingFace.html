@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.101">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="“Learn about easy ML app development”">
+
+<title>tanishq_blog - “Gradio + HuggingFace Spaces: A Tutorial”</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">tanishq_blog</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">“Gradio + HuggingFace Spaces: A Tutorial”</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">deep learning</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    “Learn about easy ML app development”
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>After you train a machine learning model, the next thing to do is showcase it to the world by making a demo. Currently, the easiest way to do so is with <a href="https://gradio.app">Gradio</a>, hosting on <a href="https://huggingface.co/spaces">HuggingFace Spaces</a>. With the Gradio framework deployed on Spaces, it takes &lt;10 minutes to deploy a model! Let’s see how we can easily deploy a model for the world to try out with these platforms. We will use a classic CNN pet classifier as an example.</p>
+</section>
+<section id="preliminaries-training-a-pet-classifier" class="level1">
+<h1>Preliminaries: Training a pet classifier</h1>
+<p>Before we make a demo, we need to have a model to actually demo! Let’s quickly train a simple ResNet50 pet classifier on the Oxford Pets dataset using fastai.</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastai.vision.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> untar_data(URLs.PETS)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> ImageDataLoaders.from_name_re(path, get_image_files(path<span class="op">/</span><span class="st">'images'</span>), pat<span class="op">=</span><span class="st">'(.+)_\d+.jpg'</span>, item_tfms<span class="op">=</span>Resize(<span class="dv">460</span>), batch_tfms<span class="op">=</span>aug_transforms(size<span class="op">=</span><span class="dv">224</span>, min_scale<span class="op">=</span><span class="fl">0.75</span>))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> vision_learner(dls, models.resnet50, metrics<span class="op">=</span>accuracy)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>learn.fine_tune(<span class="dv">1</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>learn.path <span class="op">=</span> Path(<span class="st">'.'</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>learn.export()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+<div class="cell-output cell-output-display">
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>accuracy</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.973277</td>
+      <td>0.309940</td>
+      <td>0.905954</td>
+      <td>00:32</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="cell-output cell-output-display">
+
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+<div class="cell-output cell-output-display">
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>accuracy</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.420781</td>
+      <td>0.260167</td>
+      <td>0.910690</td>
+      <td>00:34</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<p>And with fastai, it’s that simple! Learn more about fastai, a simple and flexible PyTorch training framework, over <a href="https://docs.fast.ai">here</a>.</p>
+</section>
+<section id="using-gradio" class="level1">
+<h1>Using Gradio</h1>
+<p>Let’s see how to make a demo web app with Gradio. First let’s load our model:</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> load_learner(<span class="st">'export.pkl'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next, let’s define a prediction function our model:</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> learn.dls.vocab</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict(img):</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    img <span class="op">=</span> PILImage.create(img)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    pred,pred_idx,probs <span class="op">=</span> learn.predict(img)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {labels[i]: <span class="bu">float</span>(probs[i]) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(labels))}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finally, let’s import Gradio and use it’s functionality to make an interface and launch it. Note that if you are doing this from a notebook, the Gradio demo will also show up within the notebook for you to try interactively (here I just show screenshots).</p>
+<p>::: {.cell 0=‘h’ 1=‘i’ 2=‘d’ 3=‘e’ 4=’_’ 5=‘o’ 6=‘u’ 7=‘t’ 8=‘p’ 9=‘u’ 10=‘t’ execution_count=4}</p>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> gradio <span class="im">as</span> gr</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>gr.Interface(fn<span class="op">=</span>predict, inputs<span class="op">=</span>gr.inputs.Image(shape<span class="op">=</span>(<span class="dv">512</span>, <span class="dv">512</span>)), outputs<span class="op">=</span>gr.outputs.Label(num_top_classes<span class="op">=</span><span class="dv">3</span>)).launch(share<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/home/tmabraham/anaconda3/envs/blog/lib/python3.9/site-packages/paramiko/transport.py:236: CryptographyDeprecationWarning: Blowfish has been deprecated
+  "class": algorithms.Blowfish,</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Running on local URL:  http://127.0.0.1:7860/
+Running on public URL: https://45690.gradio.app
+
+This share link expires in 72 hours. For free permanent hosting, check out Spaces (https://huggingface.co/spaces)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+
+        <iframe width="900" height="500" src="https://45690.gradio.app" frameborder="0" allowfullscreen=""></iframe>
+        
+</div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>(&lt;fastapi.applications.FastAPI at 0x7f3e38823d90&gt;,
+ 'http://127.0.0.1:7860/',
+ 'https://45690.gradio.app')</code></pre>
+</div>
+<p>:::</p>
+<pre><code>Running on local URL:  http://127.0.0.1:7860/
+Running on public URL: https://10290.gradio.app
+
+This share link will expire in 72 hours. To get longer links, send an email to: support@gradio.app</code></pre>
+<p><img src="gradio_frame_1.png" class="img-fluid"></p>
+<pre><code>(&lt;Flask 'gradio.networking'&gt;, 'http://127.0.0.1:7860/', 'https://10290.gradio.app')</code></pre>
+<p>That’s it! The actual creation of the demo takes one line! {% fn 1 %}</p>
+<p>All Gradio interfaces are created by constructing a <code>gradio.Interface()</code> object. As you can see in this example, the <code>Interface</code> object takes in the function that we want to make an interface for (usually an ML model inference function), Gradio input components (the number of input components should match the number of parameters of the provided function), and Gradio output components (the number of output components should match the number of values returned by the provided function). Gradio provides components for various types of input and output types. This includes: images (upload, draw, or webcam), video, audio (upload or microphone), textboxes, dataframes, timeseries, generic files, and more! So you should be able to create a Gradio demo for virtually any type of ML task you can think of!</p>
+<p>After the <code>gradio.Interface()</code> object is defined, the interface is launched with the <code>launch</code> method.</p>
+</section>
+<section id="optional-customizing-our-gradio-app" class="level1">
+<h1>Optional: customizing our Gradio app</h1>
+<p>Gradio has lots of features that we can use to customize our app. Let’s go over a few of these features and add them to our demo. All of these features are arguments for the instantiation of the <code>Interface</code> class.</p>
+<p>First of all, we can pass in a title and description for our app which goes at the top before our input and output components:</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>title <span class="op">=</span> <span class="st">"Pet Breed Classifier"</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>description <span class="op">=</span> <span class="st">"A pet breed classifier trained on the Oxford Pets dataset with fastai. Created as a demo for Gradio and HuggingFace Spaces."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can also put a link at the bottom of our demo. Here I will link to this blog post:</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>article<span class="op">=</span><span class="st">"&lt;p style='text-align: center'&gt;&lt;a href='https://tmabraham.github.io/blog/gradio_hf_spaces_tutorial' target='_blank'&gt;Blog post&lt;/a&gt;&lt;/p&gt;"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can also provide some example inputs that people can try out. Here I have provided an example Siamese cat image, which is in the same directory as my code:</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>examples <span class="op">=</span> [<span class="st">'siamese.jpg'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Another interesting feature that Gradio has is the ability for interpretation so that users can understand what parts of the input are responsible for the output. We’ll use the default interpretation function provided by Gradio but you can use your own as well:</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>interpretation<span class="op">=</span><span class="st">'default'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note that the default interpretation function needs <code>scikit-image</code> to be installed. More information on the interpretation feature is provided <a href="https://gradio.app/advanced_features/">here</a>.</p>
+<p>Gradio also provides a screenshotting feature that can make it really easy to share your examples and results with others. It is enabled by default.</p>
+<p>Finally, Gradio also supports serving of inference requests with a queue. This can be helpful when your app receives a significant amount of traffic. We’ll enable a queue here:</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>enable_queue<span class="op">=</span><span class="va">True</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You can also add custom CSS for your Gradio app but we’ll not do that here (my CSS skills are essentially non-existent! 😂). Additionally, you can set <code>live=True</code> so that it will automatically submit when you make a change to the input, but removes the Submit button so I won’t use it for now.</p>
+<p>Let’s put it all together and make our interface with these additional features:</p>
+<p>::: {.cell 0=‘h’ 1=‘i’ 2=‘d’ 3=‘e’ 4=’_’ 5=‘o’ 6=‘u’ 7=‘t’ 8=‘p’ 9=‘u’ 10=‘t’ execution_count=10}</p>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>gr.Interface(fn<span class="op">=</span>predict,inputs<span class="op">=</span>gr.inputs.Image(shape<span class="op">=</span>(<span class="dv">512</span>, <span class="dv">512</span>)),outputs<span class="op">=</span>gr.outputs.Label(num_top_classes<span class="op">=</span><span class="dv">3</span>),title<span class="op">=</span>title,description<span class="op">=</span>description,article<span class="op">=</span>article,examples<span class="op">=</span>examples,interpretation<span class="op">=</span>interpretation,enable_queue<span class="op">=</span>enable_queue).launch(share<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/home/tmabraham/anaconda3/envs/blog/lib/python3.9/site-packages/gradio/interface.py:419: UserWarning: The `enable_queue` parameter in the `Interface`will be deprecated and may not work properly. Please use the `enable_queue` parameter in `launch()` instead
+  warnings.warn(</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Running on local URL:  http://127.0.0.1:7861/
+Running on public URL: https://26985.gradio.app
+
+This share link expires in 72 hours. For free permanent hosting, check out Spaces (https://huggingface.co/spaces)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+
+        <iframe width="900" height="500" src="https://26985.gradio.app" frameborder="0" allowfullscreen=""></iframe>
+        
+</div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>(&lt;fastapi.applications.FastAPI at 0x7f3e38823d90&gt;,
+ 'http://127.0.0.1:7861/',
+ 'https://26985.gradio.app')</code></pre>
+</div>
+<p>:::</p>
+<pre><code>Running on local URL:  http://127.0.0.1:7861/
+Running on public URL: https://30513.gradio.app
+
+This share link will expire in 72 hours. To get longer links, send an email to: support@gradio.app</code></pre>
+<p><img src="gradio_frame_2.png" class="img-fluid"></p>
+<pre><code>(&lt;Flask 'gradio.networking'&gt;,
+ 'http://127.0.0.1:7861/',
+ 'https://30513.gradio.app')</code></pre>
+<p>Check the Gradio <a href="https://gradio.app/docs">documentation</a> for more information on how to customize your interface.</p>
+<p>Let’s put it all into one file which we name <code>app.py</code>:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> gradio <span class="im">as</span> gr</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastai.vision.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> skimage</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> load_learner(<span class="st">'export.pkl'</span>)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> learn.dls.vocab</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict(img):</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    img <span class="op">=</span> PILImage.create(img)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    pred,pred_idx,probs <span class="op">=</span> learn.predict(img)</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {labels[i]: <span class="bu">float</span>(probs[i]) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(labels))}</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>title <span class="op">=</span> <span class="st">"Pet Breed Classifier"</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>description <span class="op">=</span> <span class="st">"A pet breed classifier trained on the Oxford Pets dataset with fastai. Created as a demo for Gradio and HuggingFace Spaces."</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>article<span class="op">=</span><span class="st">"&lt;p style='text-align: center'&gt;&lt;a href='https://tmabraham.github.io/blog/gradio_hf_spaces_tutorial' target='_blank'&gt;Blog post&lt;/a&gt;&lt;/p&gt;"</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>examples <span class="op">=</span> [<span class="st">'siamese.jpg'</span>]</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>interpretation<span class="op">=</span><span class="st">'default'</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>enable_queue<span class="op">=</span><span class="va">True</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>gr.Interface(fn<span class="op">=</span>predict,inputs<span class="op">=</span>gr.inputs.Image(shape<span class="op">=</span>(<span class="dv">512</span>, <span class="dv">512</span>)),outputs<span class="op">=</span>gr.outputs.Label(num_top_classes<span class="op">=</span><span class="dv">3</span>),title<span class="op">=</span>title,description<span class="op">=</span>description,article<span class="op">=</span>article,examples<span class="op">=</span>examples,interpretation<span class="op">=</span>interpretation,enable_queue<span class="op">=</span>enable_queue).launch()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Let’s also make a <code>requirements.txt</code> file which will allow us to install the packages that we need in whatever environment we need:</p>
+<pre><code>fastai
+scikit-image</code></pre>
+<p>Now that we have our self-contained web app, we could deploy this on any webserver or cloud platform that we want. But let’s see how we can use HuggingFace Spaces to deploy it.</p>
+</section>
+<section id="using-huggingface-spaces" class="level1">
+<h1>Using HuggingFace Spaces</h1>
+<p><a href="https://huggingface.co/spaces">HuggingFace Spaces</a> is a free-to-use platform for hosting machine learning demos and apps. The Spaces environment provided is a CPU environment with 16 GB RAM and 8 cores. It currently supports the Gradio and Streamlit platforms. Here we will make a Space for our Gradio demo.</p>
+<p>In order to be able to create a HuggingFace Space, you need to have a HuggingFace account. You can sign up for free <a href="https://huggingface.co/join">here</a>. After signing up, you can create a Space by clicking “New Space” on the navigation menu (press on your profile image).</p>
+<p><img src="create_spaces.png" class="img-fluid"></p>
+<p>Now you will be shown instructions on how to add your code to this Space from the command line to prepare the demo. Spaces are essentially git repositories (like GitHub) with an <code>app.py</code> file from which the demo is prepared.</p>
+<p>So we can clone the repository to a local directory,</p>
+<pre><code>git clone https://huggingface.co/spaces/tmabraham/fastai_pet_classifier</code></pre>
+<p>add the <code>app.py</code>, <code>requirements.txt</code>, <code>export.pkl</code>, and <code>siamese.jpg</code> files,</p>
+<pre><code>cp app.py fastai_pet_classifier/app.py
+cp requirements.txt fastai_pet_classifier/requirements.txt
+cp export.pkl fastai_pet_classifier/export.pkl
+cp siamese.jpg fastai_pet_classifier/siamese.jpg</code></pre>
+<p>Now before we commit our files, there is something we need to pay attention to. Our model file <code>export.pkl</code> is too big to be handled by <code>git</code>. So instead we need to use <a href="https://git-lfs.github.com">git-lfs</a> which you first need to install. If you are on Debian or Ubuntu, you can directly use <code>apt-get install git-lfs</code> (which installs an older version but that’s not really an issue). For other Linux distros, you can use <a href="https://gist.github.com/jph00/361a9b868aa3593f3fd8e930d0221266">this script</a> which <a href="https://twitter.com/jeremyphoward">Jeremy Howard</a> has prepared. For Windows, you can download and run the installer from <a href="https://github.com/git-lfs/git-lfs/releases">here</a>. For MacOS, you can do <code>brew install git-lfs</code>.</p>
+<p>Once you have installed git-lfs, you can then initialize git-lfs in the repository for the app in the following way:</p>
+<pre><code>git lfs install
+git lfs track "*.pkl"
+git add .gitattributes
+git commit -m "update .gitattributes so git lfs will track .pkl files"</code></pre>
+<p>Now, we can commit and push the changes to the Space.</p>
+<pre><code>git commit -am "let's deploy to huggingface spaces"
+git push</code></pre>
+<p><strong>Alternatively</strong>, the files can be uploaded via the Spaces UI. When you go to your Space, under “Files and versions”, there is an “Add files” button which you can use to upload your app files.</p>
+<p>After a few moments, during which the app is being built, our demo should show up on the HuggingFace Space.</p>
+<p>That’s it! In a few minutes, you trained a pet classifier model with fastai, made a demo interface with Gradio, and hosted it for free on a HuggingFace Space! You can try it out right below or you can try it out on HuggingFace Spaces <a href="https://huggingface.co/spaces/tmabraham/fastai_pet_classifier">here</a>. All the files described in this post located <a href="https://huggingface.co/spaces/tmabraham/fastai_pet_classifier/tree/main">here</a>). {% fn 2 %}</p>
+<div class="cell" data-execution_count="19">
+<div class="cell-output cell-output-display">
+
+        <iframe width="900" height="900" src="https://hf.space/embed/tmabraham/fastai_pet_classifier/+" frameborder="0" allowfullscreen=""></iframe>
+        
+</div>
+</div>
+<p>If you are a more advanced user with expertise in web development, you might be interested to know that there is an API available for any Gradio interface (there is a “view the api” link at the bottom of the interface). For example, <a href="https://hf.space/embed/tmabraham/fastai_pet_classifier/api">here</a> is a link to the API docs for my interface. This provides much more flexibility, like interacting with your model very easily in code. For example, here I can take any image URL and get a pet breed prediction with my model.</p>
+<div class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> gradio <span class="im">as</span> gr</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Image</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.core.display <span class="im">import</span> HTML </span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>image_url <span class="op">=</span> <span class="st">'https://petkeen.com/wp-content/uploads/2021/05/grey-cat.jpeg'</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> gr.processing_utils.encode_url_or_file_to_base64(image_url)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> requests.post(url<span class="op">=</span><span class="st">'https://hf.space/embed/tmabraham/fastai_pet_classifier/+/api/predict/'</span>, json<span class="op">=</span>{<span class="st">"data"</span>:[data]})</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"The breed of this pet is a </span><span class="sc">{</span>(<span class="st">' '</span>.join(r.json()[<span class="st">'data'</span>][<span class="dv">0</span>][<span class="st">'label'</span>].split(<span class="st">'_'</span>)))<span class="sc">}</span><span class="ss">:"</span>)</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>display(Image(url<span class="op">=</span>image_url, width<span class="op">=</span><span class="dv">475</span>))</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Original JSON returned from the request: '</span>, json.dumps(r.json(), indent<span class="op">=</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The breed of this pet is a British Shorthair:</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<img src="https://petkeen.com/wp-content/uploads/2021/05/grey-cat.jpeg" width="475">
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Original JSON returned from the request:  {
+  "data": [
+    {
+      "label": "British_Shorthair",
+      "confidences": [
+        {
+          "label": "British_Shorthair",
+          "confidence": 0.9997965693473816
+        },
+        {
+          "label": "Russian_Blue",
+          "confidence": 0.00019805884221568704
+        },
+        {
+          "label": "Sphynx",
+          "confidence": 2.037774265772896e-06
+        }
+      ]
+    }
+  ],
+  "flag_index": null,
+  "updated_state": null,
+  "durations": [
+    0.09037947654724121
+  ],
+  "avg_durations": [
+    0.13969146820806688
+  ]
+}</code></pre>
+</div>
+</div>
+<p>Some examples of using the API in custom websites is provided <a href="https://fastai.github.io/tinypets/">here</a> (put together by Jeremy Howard and members of the fast.ai community).</p>
+<p>For more information on Gradio and HuggingFace Spaces, check the relevant docs and forums:</p>
+<ul>
+<li><a href="https://gradio.app/docs/">Gradio documentation</a></li>
+<li><a href="https://huggingface.co/docs/hub/spaces">HuggingFace Spaces documentation</a></li>
+<li><a href="https://gradio.app/guides/">Gradio Guides</a></li>
+<li><a href="https://discuss.huggingface.co/">HuggingFace Forums (for Spaces and Gradio Q&amp;A)</a></li>
+</ul>
+<p>There are so many features of Gradio and Spaces that I haven’t mentioned here (like multiple models per demo, the Blocks feature, etc.). Additionally, both Gradio and HuggingFace Spaces are in active development and new, amazing features afe always being added by tje Gradio and HuggingFace teams! For this reason, I also recommend following <a href="https://twitter.com/huggingface">HuggingFace</a> and <a href="https://twitter.com/gradio">Gradio</a> on Twitter to hear about the latest updates and newest features.</p>
+<p>I’ll end by sharing a quick example prediction by my pet classifier of our new kitten! Her name is Mimi and, as predicted by my classifier here, she is indeed a Ragdoll kitten!:</p>
+<p><img src="gradio_mimi.png" class="img-fluid"></p>
+</section>
+<section id="acknowledgements" class="level1">
+<h1>Acknowledgements</h1>
+<p>Thanks to Zach Mueller, Ahsen Khaliq, Abhishek Thakur, and Jeremy Howard for reviewing my blog post.</p>
+</section>
+<section id="footnotes" class="level1">
+<h1>Footnotes</h1>
+<p>{{ ‘One of the developers of Gradio created a simple Python module to easily create Gradio demos for fastai <code>Learner</code> objects. Check it out <a href="https://github.com/aliabd/fastgradio">here</a>. It currently only supports image-to-label interfaces but it could likely be expanded to other tasks fairly easily.’ | fndetail: 1 }}</p>
+<p>{{ ‘Recently, HuggingFace <a href="https://github.com/huggingface/huggingface_hub/pull/678">added</a> direct support for pushing and loading fastai models to the HuggingFace Hub with the <code>push_to_hub_fastai</code> and <code>from_pretrained_fastai</code> functions, respectively. This can make creating Spaces much easier, since you can just load it in the Space and not have to add it to the repository with <code>git-lfs</code>. See an example of this over <a href="https://huggingface.co/spaces/espejelomar/cat_or_dog_fastai/blob/main/app.py">here</a>.’ | fndetail: 2 }}</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

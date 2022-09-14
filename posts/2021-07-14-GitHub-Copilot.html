@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.101">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="My thoughts and experience on the new GitHub Copilot tool.">
+
+<title>tanishq_blog - Coding with GitHub Copilot</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">tanishq_blog</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#coding-with-github-copilot" id="toc-coding-with-github-copilot" class="nav-link active" data-scroll-target="#coding-with-github-copilot">Coding with GitHub Copilot</a>
+  <ul class="collapse">
+  <li><a href="#what-is-github-copilot" id="toc-what-is-github-copilot" class="nav-link" data-scroll-target="#what-is-github-copilot">What is GitHub Copilot?</a>
+  <ul class="collapse">
+  <li><a href="#github-copilot-is-a-tool-that-helps-you-to-code-faster" id="toc-github-copilot-is-a-tool-that-helps-you-to-code-faster" class="nav-link" data-scroll-target="#github-copilot-is-a-tool-that-helps-you-to-code-faster">GitHub Copilot is a tool that helps you to code faster</a></li>
+  </ul></li>
+  <li><a href="#challenges-with-github-copilot" id="toc-challenges-with-github-copilot" class="nav-link" data-scroll-target="#challenges-with-github-copilot">Challenges with GitHub Copilot</a>
+  <ul class="collapse">
+  <li><a href="#personal-information-shared-by-github-copilot" id="toc-personal-information-shared-by-github-copilot" class="nav-link" data-scroll-target="#personal-information-shared-by-github-copilot">Personal information shared by GitHub Copilot</a></li>
+  <li><a href="#multi-lingual-capabilities-of-github-copilot" id="toc-multi-lingual-capabilities-of-github-copilot" class="nav-link" data-scroll-target="#multi-lingual-capabilities-of-github-copilot">Multi-lingual capabilities of GitHub Copilot</a></li>
+  <li><a href="#copyrightlicensing-issues" id="toc-copyrightlicensing-issues" class="nav-link" data-scroll-target="#copyrightlicensing-issues">Copyright/licensing issues</a></li>
+  <li><a href="#usage-of-outdated-apis" id="toc-usage-of-outdated-apis" class="nav-link" data-scroll-target="#usage-of-outdated-apis">Usage of outdated APIs</a></li>
+  </ul></li>
+  <li><a href="#how-might-github-copilot-be-commercialized" id="toc-how-might-github-copilot-be-commercialized" class="nav-link" data-scroll-target="#how-might-github-copilot-be-commercialized">How might GitHub Copilot be commercialized?</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul></li>
+  <li><a href="#acknowledgements" id="toc-acknowledgements" class="nav-link" data-scroll-target="#acknowledgements">Acknowledgements</a></li>
+  <li><a href="#footnotes" id="toc-footnotes" class="nav-link" data-scroll-target="#footnotes">Footnotes</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Coding with GitHub Copilot</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">programming</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    My thoughts and experience on the new GitHub Copilot tool.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="coding-with-github-copilot" class="level1">
+<h1>Coding with GitHub Copilot</h1>
+<p>On July 1st, I was able to obtain access to GitHub Copilot, thanks to <a href="https://twitter.com/hamelhusain">Hamel Husain</a>. I wanted to share my experience and discoveries about this new tool. Much of the findings was demonstrated with the help of Mazen Alotaibi, Ryan Panwar, and Mark Saroufim.</p>
+<section id="what-is-github-copilot" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-github-copilot">What is GitHub Copilot?</h2>
+<section id="github-copilot-is-a-tool-that-helps-you-to-code-faster" class="level3">
+<h3 class="anchored" data-anchor-id="github-copilot-is-a-tool-that-helps-you-to-code-faster">GitHub Copilot is a tool that helps you to code faster</h3>
+<p>If you haven’t logged onto Twitter or Hacker News in the last couple weeks, you might not know about <a href="https://copilot.github.com">GitHub Copilot</a>. Developed out of a partnership between OpenAI and Microsoft (GitHub’s parent company), it’s an AI-based autocomplete tool that helps you to write code faster. The GitHub team has termed it “your AI pair programmer”. OpenAI CTO Greg Brockman has explained that it utilizes the currently-unreleased Codex model, which is apparently a successor to the (in)famous GPT-3 language model. It has been trained on billions of lines of code available on GitHub <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>Based on the demos that GitHub Copilot provided and favorable reviews from beta-testers, I was eager to give it a try, but I was also skeptical if it really was as life-changing as people claimed it was. To my surprise, it was much better than I expected.</p>
+<p>Here is a demo of GitHub Copilot in action (specifically for an ML-related task):</p>
+<center>
+{% twitter https://twitter.com/iScienceLuvr/status/1411074516411764743 %}
+</center>
+<p>It’s clear that GitHub Copilot understands the general PyTorch training workflow, and understands intricacies like what are the appropriate augmentations for images (resizing, random crop, normalization, etc.), making sure to put model into evaluation mode and with <code>torch.no_grad()</code> during validation, etc. These are things that sometimes we may forget to do, so it’s great that GitHub Copilot can help prevent us from making these common mistakes.</p>
+<p>GitHub Copilot performs best when you provide it with comments describing what you are trying to do. It then uses the comments to generate a list of possible completions. This is highlighted in the example above, where I wrote a few lines about what I wanted to do (fine-tuning a pretrained ResNet50 on a custom dataset) and how I wanted to do that, and it mostly completed the rest of the code for me. I think this is great, because it changes the way we code. It now drives code development to focus on documentation, since writing good documentation often results in better Copilot suggestions.</p>
+<p>On a related note, some have hypothesized that GitHub Copilot might also lead to more test-driven development:</p>
+<center>
+{% twitter https://twitter.com/chrisalbon/status/1410827508283367424 %}
+</center>
+<p>I also want to point out that while most demos directly use GitHub Copilot in the editor, it’s also possible to open GitHub Copilot in a separate tab and have it generate and present multiple suggestions for you. Here’s an example:</p>
+<center>
+<video width="528" height="310" controls="">
+<source src="https://i.imgur.com/ah49d8V.mp4" type="video/mp4">
+</video>
+</center>
+<p>I quite like this feature, because it provides various approaches for solving a particular task, and I can select which approach I want to use. For instance, in the above example, it shows various approaches for defining a ResNet50 model for fine-tuning. I typically prefer defining a class for the ResNet50, so I select that option.</p>
+<p>There is another unintended consequence of GitHub Copilot that I find interesting. GitHub Copilot actually makes a pretty good autocomplete tool for regular writing. I actually discovered this when I started writing this blog post in a Markdown file in the VS Code editor. Of course, this is likely GitHub Copilot learning from README files and other documentation in various repositories, and there could be some residual general knowledge from the underlying GPT-3 model (if that is indeed the base model used) <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. But I would genuinely consider writing more in Markdown files with VS Code + GitHub Copilot because some of the autocomplete suggestions are actually quite helpful.</p>
+</section>
+</section>
+<section id="challenges-with-github-copilot" class="level2">
+<h2 class="anchored" data-anchor-id="challenges-with-github-copilot">Challenges with GitHub Copilot</h2>
+<p>There are several challenges that I think could preclude widespread use of GitHub Copilot:</p>
+<ol type="1">
+<li>Leaking of personal information</li>
+<li>Limited multi-lingual capabilities</li>
+<li>Copyright/licensing issues</li>
+<li>Usage of outdated APIs</li>
+</ol>
+<p>Let’s dive into each of these issues further.</p>
+<section id="personal-information-shared-by-github-copilot" class="level3">
+<h3 class="anchored" data-anchor-id="personal-information-shared-by-github-copilot">Personal information shared by GitHub Copilot</h3>
+<p>One aspect we discovered was that GitHub Copilot would inadvertantly share information that would be considered personal, such as people’s names, phone numbers, emails, etc. This was something Mazen and I explored further. Here are a few examples of this.</p>
+<p>In a Python file, simply asking it to create a function to list author names indeed gives the name of a person that exist: <img src="https://media.discordapp.net/attachments/806360771038019669/860317676390580224/unknown.png" class="img-fluid"></p>
+<p>Mark demonstrated an example when writing a bash script when an actual person’s name was suggested in an autocompletion <a href="https://www.twitch.tv/marksaroufim/clip/ScrumptiousTangiblePastaDogFace-2bOqEL6P5pYl_ALK">here</a>.</p>
+<p>Interestingly, this method did not work for returning other types of information like phone numbers:</p>
+<p><img src="https://media.discordapp.net/attachments/806360771038019669/860319889410752542/unknown.png" class="img-fluid"></p>
+<p><img src="https://media.discordapp.net/attachments/806360771038019669/860321195526193162/unknown.png" class="img-fluid"></p>
+<p>But if we just ask GitHub Copilot to autocomplete phone number in a comment at the beginning of a Python file, it does work:</p>
+<p><img src="https://media.discordapp.net/attachments/806360771038019669/860322962472042536/unknown.png" class="img-fluid"></p>
+<p>Mazen looked more into this number, and found out it was used in several GitHub repositories, including a programming example problem <a href="https://github.com/krelly/codewars/blob/7f9a46c845c5918856bb8e740588519dbbbd1b26/5-kyu/phone-directory/README.md">here</a>.</p>
+<p>Mark also discovered that working API keys were provided by GitHub Copilot: <img src="https://media.discordapp.net/attachments/806360771038019669/861813846896017408/unknown.png" class="img-fluid"></p>
+<p>Interestingly, from my experiments, I was not able to get GitHub Copilot to leak any e-mail addresses.</p>
+<p>On their website, GitHub Copilot has the following information:</p>
+<p><img src="https://i.imgur.com/fB33Ofo.png" class="img-fluid"></p>
+<p>So this confirms that indeed private information was available in the training set that allows GitHub Copilot to leak this information. I was unable to easily get email addresses because of the rudimentary filtering that GitHub Copilot performed.</p>
+</section>
+<section id="multi-lingual-capabilities-of-github-copilot" class="level3">
+<h3 class="anchored" data-anchor-id="multi-lingual-capabilities-of-github-copilot">Multi-lingual capabilities of GitHub Copilot</h3>
+As we mentioned before, GitHub Copilot performs best when you provide it with comments explaining your intent. Therefore, Mazen and I wanted to explore how well GitHub Copilot can perform with comments in various languages. I have used Google Translate to translate my English comments to various languages and observe how well it performed. Let’s go over an example. Below, I give GitHub Copilot the prompt to “Add two numbers” and see what Python code it suggests:
+
+<style>
+    table {
+    text-align: center
+    }
+</style>
+<pre><code>&lt;/tr&gt;</code></pre><pre><code>&lt;/tr&gt;</code></pre><pre><code>&lt;/tr&gt;</code></pre><pre><code>&lt;/tr&gt;</code></pre><table>
+<thead>
+<tr>
+<th>
+English
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<video width="528" height="310" controls="">
+<source src="https://i.imgur.com/tcyHz3S.mp4" type="video/mp4">
+</video>
+</td>
+
+</tr></tbody>
+<thead>
+<tr>
+<th>
+Mandarin
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<video width="528" height="310" controls="">
+<source src="https://i.imgur.com/4BNewWz.mp4" type="video/mp4">
+</video>
+</td>
+
+</tr></tbody>
+<thead>
+<tr>
+<th>
+Spanish
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<video width="528" height="310" controls="">
+<source src="https://i.imgur.com/Fko6cBm.mp4" type="video/mp4">
+</video>
+</td>
+
+</tr></tbody>
+<thead>
+<tr>
+<th>
+Arabic
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<video width="528" height="310" controls="">
+<source src="https://i.imgur.com/MY8rJ0A.mp4" type="video/mp4">
+</video>
+</td>
+
+</tr></tbody>
+
+</table>
+<p>Of course, if you comment with English, GitHub Copilot provides a good suggestion. It gives us an adding function as well as some use-cases. But as demonstrated in these experiments, the quality of GitHub Copilot suggestions when given comments in other languages likely is correlated with the overall frequency of these languages in the training data. It’s likely that Mandarin and Spanish is more common than Arabic in the training set, so GitHub Copilot performs better with Mandarin and Spanish comments. Of course, this is a single example (although I observed similar results with other prompts). However, given that it’s well-established that biases in the training data are reflected in the output of any ML algorithm (unless it is appropriately counteracted), I think it is safe to assume that GitHub Copilot will likely be less useful for non-English-speaking users.</p>
+</section>
+<section id="copyrightlicensing-issues" class="level3">
+<h3 class="anchored" data-anchor-id="copyrightlicensing-issues">Copyright/licensing issues</h3>
+<p>Let’s move on to the elephant in the room: copyright/licensing issues. GitHub Copilot/Codex was trained on all public GitHub code, regardless of license (<a href="https://twitter.com/NoraDotCodes/status/1412741339771461635">confirmed</a> by GitHub). While <a href="https://juliareda.eu/2021/07/github-copilot-is-not-infringing-your-copyright/">some argue</a> that training on copyrighted code is not an issue, it becomes much more challenging to argue that when Copilot is <a href="https://twitter.com/mitsuhiko/status/1410886329924194309">regurgitating public code verbatim</a> <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. According to GitHub, Copilot repeats code snippets verbatim about 0.1% of the time. They have also provided a more in-depth study <a href="https://github.co/copilot-research-recitation">here</a>. Thankfully they are currently developing origin tracker that tells where the verbatim code is coming from and allows you to decide whether to include proper attribution or not use that code altogether.</p>
+<p>In my opinion, because of these copyright issues, GitHub Copilot in its current state is not usable for commericial purposes. I think that once the origin tracker is released, copyright issues will be resolved, although it puts the onus on the user to make sure that code is properly attributed. Of course, the easier solution would have been to avoid training on copyrighted and GPL-licensed code altogether, which would have likely prevented the significant controversy that arose, and I wonder what led to the decision to train on all public GitHub code instead of further curating the dataset.</p>
+</section>
+<section id="usage-of-outdated-apis" class="level3">
+<h3 class="anchored" data-anchor-id="usage-of-outdated-apis">Usage of outdated APIs</h3>
+<p>As an ML researcher and developer, I am typically working with the latest ML frameworks and tools. However, GitHub Copilot is trained on older codebases and does not have knowledge of these cutting-edge tools and is often unable to provide relevant suggestions.</p>
+<p>I first discovered this issue when trying to write <a href="https://docs.fast.ai">fastai</a>-related code and get GitHub Copilot to provide relevant suggestions. However, since the latest version of fastai was only released in August 2020, GitHub Copilot was not able to provide any relevant suggestions and instead provided code for using older versions of fastai. This indicates that the codebases that GitHub Copilot is trained on must be at least before August 2020, if not earlier. Similarly, I discovered that GitHub Copilot was unable to provide any suggestions regarding the usage of the <a href="https://github.com/rwightman/pytorch-image-models">timm</a> library, which is one of the leading deep learning+computer vision libraries.</p>
+<p>Here is a video that demonstrates this issue:</p>
+<center>
+<video width="528" height="310" controls="">
+<source src="https://i.imgur.com/OH8rtxc.mp4" type="video/mp4">
+</video>
+</center>
+<p>To me, this is a major concern regarding the current usability of GitHub Copilot <a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. If we are using cutting edge tools like PyTorch XLA, JAX, fastai, timm, GitHub Copilot has no knowledge of this and cannot provide useful suggestions. Somehow, the GitHub team needs to keep Copilot updated on newer codebases. Given that <a href="https://docs.github.com/en/github/copilot/about-github-copilot-telemetry">telemetry of GitHub Copilot usage</a> is being sent to GitHub, it’s possible that the GitHub team can further train their model on the usage of these newer codebases. Indeed, it is mentioned in the documentation that the telemetry data is used for “improving the underlying code generation models, e.g.&nbsp;by providing positive and negative examples (but always so that your private code is not used as input to suggest code for other users of GitHub Copilot)”. Additionally, a GitHub Developer Advocate has <a href="https://youtu.be/St2CMvK4hK0?t=257">mentioned</a> that “the model is being trained everyday, so the more people use it, Copilot will learn that these suggestions need to be updated”.</p>
+<p>I wonder if the GitHub team might also develop a way of perhaps fine-tuning GitHub Copilot to specific use-cases. For example, there may be a specific GitHub Copilot models for fastai, JAX, etc. They would be fine-tuned on the source code of of these libraries and codebases that use these libraries. But making sure that the tool does not provide outdated suggestions would still be a challenge. I don’t think it would be possible to provide suggestions for a brand-new library that does not have enough codebases using it to train on. Additionally, for situations like fastai where there are older APIs and newer APIs, when fine-tuning a model, the codebases using the older APIs would have to be filtered out.</p>
+<p>All in all, I personally think that for practical applications, it is necessary for GitHub Copilot to provide suggestions for new codebases, and doing so might be a difficult but potentially solvable challenge.</p>
+</section>
+</section>
+<section id="how-might-github-copilot-be-commercialized" class="level2">
+<h2 class="anchored" data-anchor-id="how-might-github-copilot-be-commercialized">How might GitHub Copilot be commercialized?</h2>
+<p>While it is currently available for free to the beta-testers, the GitHub team has already mentioned they plan to commercialize this product. There are several ways that GitHub Copilot could be commercialized:</p>
+<ol type="1">
+<li>A monthly fee for personal use of a generic GitHub Copilot model</li>
+<li>Enterprises paying for a model fine-tuned to their specific, private codebases</li>
+<li>Separate fees for domain-specific models (ex: a GitHub Copilot model for writing machine learning code, or a GitHub Copilot model for web development)</li>
+</ol>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>In conclusion, GitHub Copilot, is a mind-blowing and extremely powerful tool. Additionally, it is a very interesting and practical application of AI. With the domains that it is most familiar, GitHub Copilot works exceptionally well and can write most of the code for you! It may very well change the approach and workflow many programmers have and lead to documentation-driven and test-driven development.</p>
+<p>But it’s not yet ready for prime time. There are clear issues with leaking of personal information copyright/licensing issues, accessibility to foreign-language users, and its use on more cutting-edge projects. Thankfully, the GitHub team is working on these issues and I’m excited by the future of AI-augmented programming!</p>
+</section>
+</section>
+<section id="acknowledgements" class="level1">
+<h1>Acknowledgements</h1>
+<p>Thank you to <a href="https://twitter.com/hamelhusain">Hamel Husain</a> for helping to provide access to the GitHub Copilot tool and also for reviewing the blog post.</p>
+<p>Thank you to <a href="https://twitter.com/sudomaze">Mazen Alotaibi</a>, <a href="https://twitter.com/RyanPanwar">Ryan Panwar</a>, and <a href="https://twitter.com/mark_saroufim">Mark Saroufim</a> for sharing their ideas to try with GitHub Copilot and also for reviewing the blog post.</p>
+</section>
+<section id="footnotes" class="level1">
+<h1>Footnotes</h1>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>The OpenAI team has recently released a <a href="https://arxiv.org/abs/2107.03374">paper</a> on the Codex model that was trained on Python code, and it is noted that the GitHub Copilot model is a descendant of the one reported in the paper. Importantly, this paper indicates that Codex model is a fine-tuned GPT-3 model. It is likely that the GitHub Copilot version is also a GPT-3 model that is instead fine-tuned on the whole GitHub dataset.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>This <a href="https://www.youtube.com/watch?v=L6Nr1uc80pY">video</a> demonstrates an example of some of the more general knowledge GitHub Copilot seems to have.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Yannic Kilcher provides a nice explanation of the potential copyright/GPL licensing issues over <a href="https://www.youtube.com/watch?v=TrLrBL1U8z0">here</a>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>A related issue that many people, including myself, have observed is that sometimes recommendations are for older versions of a programming language, such as providing Python 2.7 suggestions instead of Python 3.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

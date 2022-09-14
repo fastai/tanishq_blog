@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.101">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Hamel Husain &amp; Jeremy Howard">
+<meta name="description" content="A Tutorial on GitHub Actions For Data Scientists">
+
+<title>tanishq_blog - GitHub Actions: Providing Data Scientists With New Superpowers</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">tanishq_blog</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">GitHub Actions: Providing Data Scientists With New Superpowers</h1>
+                  <div>
+        <div class="description">
+          A Tutorial on GitHub <a href="https://github.com/features/actions">Actions</a> For Data Scientists
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">actions</div>
+                <div class="quarto-category">markdown</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Hamel Husain &amp; Jeremy Howard </p>
+            </div>
+    </div>
+      
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#what-superpowers" id="toc-what-superpowers" class="nav-link active" data-scroll-target="#what-superpowers">What Superpowers?</a>
+  <ul class="collapse">
+  <li><a href="#fastpages" id="toc-fastpages" class="nav-link" data-scroll-target="#fastpages">fastpages</a></li>
+  <li><a href="#machine-learning-ops" id="toc-machine-learning-ops" class="nav-link" data-scroll-target="#machine-learning-ops">Machine Learning Ops</a></li>
+  </ul></li>
+  <li><a href="#a-gentle-introduction-to-github-actions" id="toc-a-gentle-introduction-to-github-actions" class="nav-link" data-scroll-target="#a-gentle-introduction-to-github-actions">A Gentle Introduction To GitHub Actions</a>
+  <ul class="collapse">
+  <li><a href="#what-are-github-actions" id="toc-what-are-github-actions" class="nav-link" data-scroll-target="#what-are-github-actions">What Are GitHub Actions?</a></li>
+  <li><a href="#example-a-fastpages-action-workflow" id="toc-example-a-fastpages-action-workflow" class="nav-link" data-scroll-target="#example-a-fastpages-action-workflow">Example: A fastpages Action Workflow</a>
+  <ul class="collapse">
+  <li><a href="#part-1-define-workflow-triggers" id="toc-part-1-define-workflow-triggers" class="nav-link" data-scroll-target="#part-1-define-workflow-triggers">Part 1: Define Workflow Triggers</a></li>
+  <li><a href="#part-2-define-jobs" id="toc-part-2-define-jobs" class="nav-link" data-scroll-target="#part-2-define-jobs">Part 2: Define Jobs</a></li>
+  <li><a href="#part-3-define-steps" id="toc-part-3-define-steps" class="nav-link" data-scroll-target="#part-3-define-steps">Part 3: Define Steps</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a>
+  <ul class="collapse">
+  <li><a href="#related-materials" id="toc-related-materials" class="nav-link" data-scroll-target="#related-materials">Related Materials</a>
+  <ul class="collapse">
+  <li><a href="#getting-in-touch" id="toc-getting-in-touch" class="nav-link" data-scroll-target="#getting-in-touch">Getting In Touch</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="what-superpowers" class="level1">
+<h1>What Superpowers?</h1>
+<p>Hi, I’m <a href="https://twitter.com/HamelHusain">Hamel Husain</a>. I’m a machine learning engineer at GitHub. Recently, GitHub released a new product called <a href="https://github.com/features/actions">GitHub Actions</a>, which has mostly flown under the radar in the machine learning and data science community as just another continuous integration tool.</p>
+<p>Recently, I’ve been able to use GitHub Actions to build some very unique tools for Data Scientists, which I want to share with you today. Most importantly, I hope to get you excited about GitHub Actions, and the promise it has for giving you new superpowers as a Data Scientist. Here are two projects I recently built with Actions that show off its potential:</p>
+<section id="fastpages" class="level2">
+<h2 class="anchored" data-anchor-id="fastpages">fastpages</h2>
+<p><a href="https://github.com/fastai/fastpages">fastpages</a> is an automated, open-source blogging platform with enhanced support for Jupyter notebooks. You save your notebooks, markdown, or Word docs into a directory on GitHub, and they automatically become blog posts. Read the announcement below:</p>
+<center>
+{% twitter https://twitter.com/jeremyphoward/status/1232059428238581760?s=20 %}
+</center>
+</section>
+<section id="machine-learning-ops" class="level2">
+<h2 class="anchored" data-anchor-id="machine-learning-ops">Machine Learning Ops</h2>
+<p>Wouldn’t it be cool if you could invoke a chatbot natively on GitHub to test your machine learning models on the infrastructure of your choice (GPUs), log all the results, and give you a rich report back in a pull request so that everyone could see the results? You can with GitHub Actions!</p>
+<p>Consider the below annotated screenshot of <a href="https://github.com/machine-learning-apps/actions-ml-cicd/pull/34">this Pull Request</a>:</p>
+<p><img src="../images/fastpages_posts/actions/pr_1.png" class="img-fluid"> <img src="../images/fastpages_posts/actions/pr_2.png" class="img-fluid"></p>
+<p>A more in-depth explanation about the above project can be viewed in this video:</p>
+<p>{% include youtube.html content=“https://youtu.be/Ll50l3fsoYs” %}</p>
+<p>Using GitHub Actions for machine learning workflows is starting to catch on. <a href="https://twitter.com/julien_c">Julien Chaumond</a>, CTO of <a href="https://huggingface.co/">Hugging Face</a>, says:</p>
+<blockquote class="blockquote">
+<p>GitHub Actions are great because they let us do CI on GPUs (as most of our users use the library on GPUs not on CPUs), on our own infra! <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+</blockquote>
+<p>Additionally, you can host a GitHub Action for other people so others can use parts of your workflow without having to re-create your steps. I provide examples of this below.</p>
+</section>
+</section>
+<section id="a-gentle-introduction-to-github-actions" class="level1">
+<h1>A Gentle Introduction To GitHub Actions</h1>
+<section id="what-are-github-actions" class="level2">
+<h2 class="anchored" data-anchor-id="what-are-github-actions">What Are GitHub Actions?</h2>
+<p><a href="https://github.com/features/actions">GitHub Actions</a> allow you to run arbitrary code in response to <a href="https://help.github.com/en/actions/reference/events-that-trigger-workflows">events</a>. Events are activities that happen on GitHub such as:</p>
+<ul>
+<li>Opening a pull request</li>
+<li>Making an issue comment</li>
+<li>Labeling an issue</li>
+<li>Creating a new branch</li>
+<li>… <a href="https://help.github.com/en/actions/reference/events-that-trigger-workflows">and many more</a></li>
+</ul>
+<p>When an event is created, the GitHub Actions context is hydrated with a <a href="https://developer.github.com/v3/activity/events/types/">payload</a> containing metadata for that event. Below is an example of a payload that is received when an issue is created:</p>
+<p>{% raw %}</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"action"</span><span class="fu">:</span> <span class="st">"created"</span><span class="fu">,</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"issue"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"id"</span><span class="fu">:</span> <span class="dv">444500041</span><span class="fu">,</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"number"</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"title"</span><span class="fu">:</span> <span class="st">"Spelling error in the README file"</span><span class="fu">,</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"user"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"login"</span><span class="fu">:</span> <span class="st">"Codertocat"</span><span class="fu">,</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"User"</span><span class="fu">,</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"labels"</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">{</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"id"</span><span class="fu">:</span> <span class="dv">1362934389</span><span class="fu">,</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"node_id"</span><span class="fu">:</span> <span class="st">"MDU6TGFiZWwxMzYyOTM0Mzg5"</span><span class="fu">,</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"name"</span><span class="fu">:</span> <span class="st">"bug"</span><span class="fu">,</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">}</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>     <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>     <span class="dt">"body"</span><span class="fu">:</span> <span class="st">"It looks like you accidently spelled 'commit' with two 't's."</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This functionality allows you to respond to various events on GitHub in an automated way. In addition to this payload, GitHub Actions also provide a plethora <a href="https://help.github.com/en/actions/reference/contexts-and-expression-syntax-for-github-actions#github-context">of variables</a> and <a href="https://help.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables#default-environment-variables">environment variables</a> that afford easy to access metadata such as the username and the owner of the repo. Additionally, other people can package useful functionality into an Action that other people can inherit. For example, consider the below Action that helps you <a href="https://github.com/pypa/gh-action-pypi-publish">publish python packages to PyPi</a>:</p>
+<p>The <a href="https://github.com/pypa/gh-action-pypi-publish#usage">Usage</a> section describes how this Action can be used:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Publish a Python distribution to PyPI</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> pypa/gh-action-pypi-publish@master</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">user</span><span class="kw">:</span><span class="at"> __token__</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">password</span><span class="kw">:</span><span class="at"> ${{ secrets.pypi_password }}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This Action expects two inputs: <code>user</code> and a <code>password</code>. You will notice that the password is referencing a variable called <code>secrets</code>, which is a variable that contains an <a href="https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets">encrypted secret</a> that you can upload to your GitHub repository. There are thousands of Actions (that are free) for a wide variety of tasks that can be discovered on the <a href="https://github.com/marketplace?type=actions">GitHub Marketplace</a>. The ability to inherit ready-made Actions in your workflow allows you to accomplish complex tasks without implementing all of the logic yourself. Some useful Actions for those getting started are:</p>
+<ul>
+<li><a href="https://github.com/actions/checkout">actions/checkout</a>: Allows you to quickly clone the contents of your repository into your environment, which you often want to do. This does a number of other things such as automatically mount your repository’s files into downstream Docker containers.</li>
+<li><a href="https://github.com/mxschmitt/action-tmate">mxschmitt/action-tmate</a>: Proivdes a way to debug Actions interactively. This uses port forwarding to give you a terminal in the browser that is connected to your Actions runner. Be careful not to expose sensitive information if you use this.</li>
+<li><a href="https://github.com/actions/github-script">actions/github-script</a>: Gives you a pre-authenticated <a href="https://octokit.github.io/rest.js/">ocotokit.js</a> client that allows you to interact with the GitHub API to accomplish almost any task on GitHub automatically. Only <a href="https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token#permissions-for-the-github_token">these endpoints</a> are supported (for example, the <a href="https://developer.github.com/v3/actions/secrets/">secrets endpoint</a> is not in that list).</li>
+</ul>
+<p>In addition to the aforementioned Actions, it is helpful to go peruse the official <a href="https://help.github.com/en/actions">GitHub Actions docs</a> before diving in.</p>
+</section>
+<section id="example-a-fastpages-action-workflow" class="level2">
+<h2 class="anchored" data-anchor-id="example-a-fastpages-action-workflow">Example: A fastpages Action Workflow</h2>
+<p>The best to way familiarize yourself with Actions is by studying examples. Let’s take a look at the Action workflow that automates the build of <a href="https://fastpages.fast.ai/fastpages/jupyter/2020/02/21/introducing-fastpages.html">fastpages</a> (the platform used to write this blog post).</p>
+<section id="part-1-define-workflow-triggers" class="level3">
+<h3 class="anchored" data-anchor-id="part-1-define-workflow-triggers">Part 1: Define Workflow Triggers</h3>
+<p>First, we define triggers in <a href="https://github.com/fastai/fastpages/blob/master/.github/workflows/ci.yaml">ci.yaml</a>. Like all Actions workflows, this is a YAML file located in the .github/workflows directory of the GitHub repo.</p>
+<p>The top of this YAML file looks like this:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> CI</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">push</span><span class="kw">:</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> master</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pull_request</span><span class="kw">:</span><span class="at"> </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This means that this workflow is triggered on either a <a href="https://help.github.com/en/actions/reference/events-that-trigger-workflows#push-event-push">push</a> or <a href="https://help.github.com/en/actions/reference/events-that-trigger-workflows#pull-request-event-pull_request">pull request</a> event. Furthermore, push events are filtered such that only pushes to the master branch will trigger the workflow, whereas all pull requests will trigger this workflow. It is important to note that pull requests opened from forks will have read-only access to the base repository and cannot access any secrets for security reasons. The reason for defining the workflow in this way is we wanted to trigger the same workflow to test pull requests as well as build and deploy the website when a PR is merged into master. This will be clarified as we step through the rest of the YAML file.</p>
+</section>
+<section id="part-2-define-jobs" class="level3">
+<h3 class="anchored" data-anchor-id="part-2-define-jobs">Part 2: Define Jobs</h3>
+<p>Next, we define jobs (there is only one in this workflow). Per <a href="https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobs">the docs</a>:</p>
+<blockquote class="blockquote">
+<p>A workflow run is made up of one or more jobs. Jobs run in parallel by default.</p>
+</blockquote>
+<div class="sourceCode" id="cb4"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span><span class="at">     </span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">build-site</span><span class="kw">:</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">if</span><span class="kw">:</span><span class="at"> ( github.event.commits[0].message != 'Initial commit' ) || github.run_number &gt; 1</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ubuntu-latest</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The keyword <code>build-site</code> is the name of your job and you can name it whatever you want. In this case, we have a conditional if statement that dictates if this job should be run or not. We are trying to ensure that this workflow does not run when the first commit to a repo is made with the message ‘Initial commit’. The first variable in the if statement, <a href="https://help.github.com/en/actions/reference/contexts-and-expression-syntax-for-github-actions#github-context">github.event</a>, contains a <a href="https://developer.github.com/v3/activity/events/types/#webhook-payload-example-31">json payload</a> of the event that triggered this workflow. When developing workflows, it is helpful to print this variable in order to inspect its structure, which you can accomplish with the following YAML:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> see payload</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">      run</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        echo "PAYLOAD:\n${PAYLOAD}\n"</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">PAYLOAD</span><span class="kw">:</span><span class="at"> ${{ toJSON(github.event) }}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><em>Note: the above step is only for debugging and is not currently in the workflow.</em></p>
+<p><a href="https://help.github.com/en/actions/reference/contexts-and-expression-syntax-for-github-actions#tojson">toJson</a> is a handy function that returns a pretty-printed JSON representation of the variable. The output is printed directly in the logs contained in the Actions tab of your repo. In this example, printing the payload for a push event will look like this (truncated for brevity):</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"ref"</span><span class="fu">:</span> <span class="st">"refs/tags/simple-tag"</span><span class="fu">,</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"before"</span><span class="fu">:</span> <span class="st">"6113728f27ae8c7b1a77c8d03f9ed6e0adf246"</span><span class="fu">,</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"created"</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"deleted"</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"forced"</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"base_ref"</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"commits"</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"message"</span><span class="fu">:</span> <span class="st">"updated README.md"</span><span class="fu">,</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"author"</span><span class="fu">:</span> <span class="st">"hamelsmu"</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"head_commit"</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Therefore, the variable <code>github.event.commits[0].message</code> will retrieve the first commit message in the array of commits. Since we are looking for situations where there is only one commit, this logic suffices. The second variable in the if statement, <a href="https://help.github.com/en/actions/reference/contexts-and-expression-syntax-for-github-actions#github-context">github.run_number</a> is a special variable in Actions which:</p>
+<blockquote class="blockquote">
+<p>[is a] unique number for each run of a particular workflow in a repository. This number begins at 1 for the workflow’s first run, and increments with each new run. This number does not change if you re-run the workflow run.</p>
+</blockquote>
+<p>Therefore, the <code>if</code> statement introduced above:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">if</span><span class="kw">:</span><span class="at"> ( github.event.commits[0].message != 'Initial commit' ) || github.run_number &gt; 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Allows the workflow to run when the commit message is “Initial commit” as long as it is not the first commit. ( <code>||</code> is a logical <code>or</code> operator).</p>
+<p>Finally, the line <code>runs-on: ubuntu-latest</code> specifies the <a href="https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on">host operating system</a> that your workflows will run in.</p>
+</section>
+<section id="part-3-define-steps" class="level3">
+<h3 class="anchored" data-anchor-id="part-3-define-steps">Part 3: Define Steps</h3>
+<p>Per the <a href="https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idsteps">docs</a>:</p>
+<blockquote class="blockquote">
+<p>A job contains a sequence of tasks called steps. Steps can run commands, run setup tasks, or run an Action in your repository, a public repository, or an Action published in a Docker registry. Not all steps run Actions, but all Actions run as a step. Each step runs in its own process in the runner environment and has access to the workspace and filesystem. Because steps run in their own process, changes to environment variables are not preserved between steps. GitHub provides built-in steps to set up and complete a job.</p>
+</blockquote>
+<p>Below are the first two steps <a href="https://github.com/fastai/fastpages/blob/master/.github/workflows/ci.yaml">in our workflow</a>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="at">   </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Copy Repository Contents</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="at">     </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@master</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="at">     </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="at">       </span><span class="fu">persist-credentials</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="at">   </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> convert notebooks and word docs to posts</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="at">     </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> ./_action_files</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The first step creates a copy of your repository in the Actions file system, with the help of the utility <a href="https://github.com/actions/checkout">action/checkout</a>. This utility only fetches the last commit by default and saves files into a directory (whose path is stored in the environment variable <a href="https://help.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables">GITHUB_WORKSPACE</a> that is accessible by subsequent steps in your job. The second step runs the <a href="https://github.com/fastai/fastpages#using-the-github-action--your-own-custom-blog">fastai/fastpages</a> Action, which converts notebooks and word documents to blog posts automatically. In this case, the syntax:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">uses</span><span class="kw">:</span><span class="at"> ./_action_files</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>is a special case where the pre-made GitHub Action we want to run happens to be defined in the same repo that runs this workflow. This syntax allows us to test changes to this pre-made Action when evaluating PRs by referencing the directory in the current repository that defines that pre-made Action. <em>Note: Building pre-made Actions is beyond the scope of this tutorial.</em></p>
+<p>The next three steps in our workflow are defined below:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> setup directories for Jekyll build</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">      run</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>        rm -rf _site</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>        sudo chmod -R 777 .</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Jekyll build</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> docker://fastai/fastpages-jekyll</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">args</span><span class="kw">:</span><span class="at"> bash -c "gem install bundler &amp;&amp; jekyll build -V"</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">JEKYLL_ENV</span><span class="kw">:</span><span class="at"> </span><span class="st">'production'</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="at">  </span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> copy CNAME file into _site if CNAME exists</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="fu">      run</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>        sudo chmod -R 777 _site/</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>        cp CNAME _site/ 2&gt;/dev/null || :</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The step named <code>setup directories for Jekyll build</code> executes shell commands that remove the <code>_site</code> folder in order to get rid of stale files related to the page we want to build, as well as grant permissions to all the files in our repo to subsequent steps.</p>
+<p>The step named <code>Jekyll build</code> executes a docker container hosted by the Jekyll community <a href="https://hub.docker.com/r/jekyll/jekyll/">on Dockerhub called <code>jekyll/jekyll</code></a>. For those not familiar with Docker, see <a href="https://towardsdatascience.com/how-docker-can-help-you-become-a-more-effective-data-scientist-7fc048ef91d5?source=friends_link&amp;sk=c554b55109102d47145c4b3381bee3ee">this tutorial</a>. The name of this container is called <code>fastai/fastpages-jekyll</code> because I’m adding some additional dependencies to <code>jekyll/jekyll</code> and hosting those on my DockerHub account for faster build times<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. The <a href="https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstepswithargs">args parameter</a> allows you to execute arbitrary commands with the Docker container by overriding the CMD instruction in the Dockerfile. We use this Docker container hosted on Dockerhub so we don’t have to deal with installing and configuring all of the complicated dependencies for Jekyll. The files from our repo are already available in the Actions runtime due to the first step in this workflow, and are mounted into this Docker container automatically for us. In this case, we are running the command <code>jekyll build</code>, which builds our website and places relevant assets them into the <code>_site</code> folder. For more information about Jekyll, <a href="https://jekyllrb.com/docs/">read the official docs</a>. Finally, the <code>env</code> parameter allows me to pass an environment variable into the Docker container.</p>
+<p>The final command above copies a <code>CNAME</code> file into the _site folder, which we need for the custom domain <a href="https://fastpages.fast.ai/">https://fastpages.fast.ai</a>. Setting up custom domains are outside the scope of this article.</p>
+<p>The final step in our workflow is defined below:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Deploy</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">if</span><span class="kw">:</span><span class="at"> github.event_name == 'push'</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> peaceiris/actions-gh-pages@v3</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">deploy_key</span><span class="kw">:</span><span class="at"> ${{ secrets.SSH_DEPLOY_KEY }}</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">publish_dir</span><span class="kw">:</span><span class="at"> ./_site</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>{% endraw %}</p>
+<p>The statement</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">if</span><span class="kw">:</span><span class="at"> github.event_name == 'push'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>uses the variable <a href="https://help.github.com/en/actions/reference/contexts-and-expression-syntax-for-github-actions#github-context">github.event_name</a> to ensure this step only runs when a push event ( in this case only pushes to the master branch trigger this workflow) occur.</p>
+<p>This step deploys the fastpages website by copying the contents of the <code>_site</code> folder to the root of the <code>gh-pages</code> branch, which <a href="https://pages.github.com/">GitHub Pages</a> uses for hosting. This step uses the <a href="https://github.com/peaceiris/actions-gh-pages">peaceiris/actions-gh-pages</a> Action, pinned at version 3. <a href="https://github.com/peaceiris/actions-gh-pages">Their README</a> describes various options and inputs for this Action.</p>
+</section>
+</section>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>We hope that this has shed some light on how we use GitHub Actions to automate fastpages. While we only covered one workflow above, we hope this provides enough intuition to understand the <a href="https://github.com/fastai/fastpages/tree/master/.github/workflows">other workflows</a> in fastpages. We have only scratched the surface of GitHub Actions in this blog post, but we provide other materials below for those who want to dive in deeper. We have not covered how to host an Action for other people, but you can <a href="https://help.github.com/en/actions/building-actions">start with these docs</a> to learn more.</p>
+<p>Still confused about how GitHub Actions could be used for Data Science? Here are some ideas of things you can build:</p>
+<ul>
+<li>Jupyter Widgets that trigger GitHub Actions to perform various tasks on GitHub via the <a href="https://help.github.com/en/actions/reference/events-that-trigger-workflows#external-events-repository_dispatch">repository dispatch event</a></li>
+<li>Integration with <a href="https://www.pachyderm.com/">Pachyderm</a> for data versioning.</li>
+<li>Integration with your favorite cloud machine learning services, such <a href="https://aws.amazon.com/sagemaker/">Sagemaker</a>, <a href="https://azure.microsoft.com/en-us/free/machine-learning/">Azure ML</a> or GCP’s <a href="https://cloud.google.com/ai-platform">AI Platform</a>.</li>
+</ul>
+<section id="related-materials" class="level2">
+<h2 class="anchored" data-anchor-id="related-materials">Related Materials</h2>
+<ul>
+<li>GitHub Actions official <a href="https://help.github.com/en/actions">documentation</a></li>
+<li><a href="https://github.com/actions/hello-world-docker-action">Hello world Docker Action</a>: A template to demonstrate how to build a Docker Action for other people to use.</li>
+<li><a href="https://github.com/sdras/awesome-actions">Awesome Actions</a>: A curated list of interesting GitHub Actions by topic.</li>
+<li><a href="https://towardsdatascience.com/how-docker-can-help-you-become-a-more-effective-data-scientist-7fc048ef91d5?source=friends_link&amp;sk=c554b55109102d47145c4b3381bee3ee">A tutorial on Docker</a> for Data Scientists.</li>
+</ul>
+<section id="getting-in-touch" class="level3">
+<h3 class="anchored" data-anchor-id="getting-in-touch">Getting In Touch</h3>
+<p>Please feel free to get in touch with us on Twitter:</p>
+<ul>
+<li>Hamel Husain <a href="https://twitter.com/HamelHusain"><span class="citation" data-cites="HamelHusain">@HamelHusain</span></a></li>
+<li>Jeremy Howard <a href="https://twitter.com/jeremyphoward"><span class="citation" data-cites="jeremyphoward">@jeremyphoward</span></a></li>
+</ul>
+<hr>
+<section id="footnotes" class="level5">
+<h5 class="anchored" data-anchor-id="footnotes">Footnotes</h5>
+
+
+</section>
+</section>
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>You can see some of Hugging Face’s Actions workflows for machine learning <a href="https://github.com/huggingface/transformers/tree/master/.github/workflows">on GitHub</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>These additional dependencies are <a href="https://github.com/fastai/fastpages/blob/master/_action_files/fastpages-jekyll.Dockerfile">defined here</a>, which uses the “jekyll build” command to add ruby dedpendencies from the Gemfile located at the root of the repo. Additionally, this docker image is built by another Action workflow <a href="https://github.com/fastai/fastpages/blob/master/.github/workflows/docker.yaml">defined here</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

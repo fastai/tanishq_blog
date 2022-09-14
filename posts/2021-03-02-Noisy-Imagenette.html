@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.101">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="“A noisy version of fastai’s Imagenette/Imagewoof datasets”">
+
+<title>tanishq_blog - “Introducing Noisy Imagenette”</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">tanishq_blog</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">“Introducing Noisy Imagenette”</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">deep learning</div>
+    <div class="quarto-category">imagenette</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    “A noisy version of fastai’s Imagenette/Imagewoof datasets”
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<p><strong>TL;DR:</strong> We introduce a dataset, Noisy Imagenette, which is a version of the Imagenette dataset with noisy labels. We hope this dataset is useful for rapid experimentation and testing of methods to address noisy label training.</p>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<section id="dataset-have-noisy-labels" class="level2">
+<h2 class="anchored" data-anchor-id="dataset-have-noisy-labels">Dataset have noisy labels!</h2>
+<p>Deep learning has led to impressive results on datasets of all types, but its success often shines when models are trained with large datasets with human-annotated labels (extreme example: GPT-3 and more recently CLIP/ALIGN/DALL-E). A major challenge when constructing these datasets is obtaining enough labels to train a neural network model. There is an inherent tradeoff between the quality of the annotations and the cost of annotation (in the form of time or money). For example, while using sources like Amazon Mechanical Turk provide cheap labeling, the use of these non-expert labeling services will often produce unreliable labels. This is what is referred to as noisy labels, as these unreliable labels are not necessarily ground truth. Unfortunately, neural networks are known to be susceptible to overfitting to noisy labels (see <a href="https://arxiv.org/abs/1611.03530">here</a>) which means alternative approaches are needed to achieve good generalization in the presence of noisy labels.</p>
+<p>## Prior research on noisy labels</p>
+<p>Recently, many techniques have been presented in order to address label noise. These include novel loss functions like <a href="https://arxiv.org/abs/1906.03361">Bi-Tempered Logistic Loss</a><a href="https://www.ijcai.org/Proceedings/2020/305">Taylor Cross Entropy Loss</a>, or <a href="https://arxiv.org/abs/1908.06112">Symmetric Cross Entropy</a>. Additionally, there are many novel training techniques that have been recently developed like <a href="https://arxiv.org/abs/1911.09781">MentorMix</a>, <a href="https://arxiv.org/abs/2002.07394">DivideMix</a>, <a href="https://arxiv.org/abs/2007.00151">Early-Learning Regularization</a> and <a href="https://openreview.net/forum?id=D1E1h-K3jso">Noise-Robust Contrastive Learning</a>.</p>
+<p>Most of these papers are using MNIST, SVHN, CIFAR10 or related datasets with synthetically-added noise. Other common datasets are the WebVision and Clothing1M datasets, which are real-world noisy, large-scale datasets with millions of images. Therefore there is an opportunity to develop a mid-scale dataset that allows for rapid prototyping but is complex enough to provide useful results when it comes to noisy label training.</p>
+</section>
+<section id="fastais-imagenette---a-dataset-for-rapid-prototyping" class="level2">
+<h2 class="anchored" data-anchor-id="fastais-imagenette---a-dataset-for-rapid-prototyping">fastai’s Imagenette - a dataset for rapid prototyping</h2>
+<p>The idea of mid-scale datasets for rapid prototyping has been explored in the past. For example, in 2019, fast.ai <a href="https://github.com/fastai/imagenette">released</a> the Imagenette and Imagewoof datasets (subsequently updated in 2020), subsets of Imagenet for rapid experimentation and prototyping. It can serve as a small dataset proxy for the ImageNet, or a dataset with more complexity than MNIST or CIFAR10 but still small and simple enough for benchmarking and rapid experimentation. This dataset has been used to test and establish new training techniques like <a href="https://arxiv.org/abs/1908.08681">Mish activation function</a> and <a href="https://forums.fast.ai/t/meet-ranger-radam-lookahead-optimizer/52886">Ranger optimizer</a> (see <a href="https://forums.fast.ai/t/how-we-beat-the-5-epoch-imagewoof-leaderboard-score-some-new-techniques-to-consider/53453">here</a>). The dataset also has been used in various papers (see <a href="https://arxiv.org/abs/2004.07629">here</a>, <a href="https://arxiv.org/abs/2007.15248">here</a>, <a href="https://arxiv.org/abs/1906.04887">here</a>, <a href="https://arxiv.org/abs/2101.06639">here</a>, <a href="https://arxiv.org/abs/2006.05624">here</a>, and <a href="https://www.sciencedirect.com/science/article/pii/S1047320321000134?casa_token=uL4_SoQQgKsAAAAA:CPGu3HeZVciBO5YEocTnziH7YVhbcGF0JCpB0JuJi2pqHmkaAKibhaVYe-3t07nxtpdem2lv">here</a>). Clearly, this dataset has been quite useful to machine learning researchers and practitioners for testing and comparing new methods. We believe that an analogous dataset could be useful to researchers with modest compute for testing and comparing new methods for addressing label noise.</p>
+</section>
+</section>
+<section id="introducing-noisy-imagenette" class="level1">
+<h1>Introducing Noisy Imagenette</h1>
+<p>We introduce Noisy Imagenette, a version of Imagenette (and Imagewoof) that has synthetically noisy labels at different levels: 1%, 5%, 25%, and 50% incorrect labels. The Noisy Imagenette dataset already comes with the Imagenette dataset:</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastai.vision.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>source <span class="op">=</span> untar_data(URLs.IMAGENETTE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>While the regular labels for Imagenette dataset are given as the names of the image folder, the noisy labels are provided as a separate CSV file with columns corresponding to the image filename and labels for each of the different noise levels:</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>csv_file <span class="op">=</span> pd.read_csv(source<span class="op">/</span><span class="st">'noisy_imagenette.csv'</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>csv_file.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>path</th>
+      <th>noisy_labels_0</th>
+      <th>noisy_labels_1</th>
+      <th>noisy_labels_5</th>
+      <th>noisy_labels_25</th>
+      <th>noisy_labels_50</th>
+      <th>is_valid</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>train/n02979186/n02979186_9036.JPEG</td>
+      <td>n02979186</td>
+      <td>n02979186</td>
+      <td>n02979186</td>
+      <td>n02979186</td>
+      <td>n02979186</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>train/n02979186/n02979186_11957.JPEG</td>
+      <td>n02979186</td>
+      <td>n02979186</td>
+      <td>n02979186</td>
+      <td>n02979186</td>
+      <td>n03000684</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>train/n02979186/n02979186_9715.JPEG</td>
+      <td>n02979186</td>
+      <td>n02979186</td>
+      <td>n02979186</td>
+      <td>n03417042</td>
+      <td>n03000684</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>train/n02979186/n02979186_21736.JPEG</td>
+      <td>n02979186</td>
+      <td>n02979186</td>
+      <td>n02979186</td>
+      <td>n02979186</td>
+      <td>n03417042</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>train/n02979186/ILSVRC2012_val_00046953.JPEG</td>
+      <td>n02979186</td>
+      <td>n02979186</td>
+      <td>n02979186</td>
+      <td>n02979186</td>
+      <td>n03394916</td>
+      <td>False</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>The generation of these noisy labels are provided in <a href="https://github.com/fastai/imagenette/blob/master/noisy_labels/generate_labels.ipynb">this Jupyter notebook</a>. We have also updated fastai’s <a href="https://github.com/fastai/fastai/blob/master/nbs/examples/train_imagenette.py">train_imagenette.py</a> to utilize the new noisy labels. If you want to train on the Noisy Imagenette dataset using this script, just simply pass the <code>--pct-noise</code> argument to the script with the desired noise level.</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The validation set remains clean and its labels are not changed. While technically the accuracy metric <a href="https://arxiv.org/abs/2012.04193">is robust</a> to noise, I believe it’s simpler to use a clean validation set to clearly understand see if a model is learning appropriate decision boundaries on the ground truth.</p>
+</div>
+</div>
+<p>For the original Imagenette dataset, there are technically (3 image sizes)*(4 number of epoch levels) for both Imagenette and Imagewoof giving a total of 24 leaderboards. If we had each of these 24 leaderboards for the previously mentioned 4 noise levels (1%, 5%, 25%, 50%), that would give us 96 leaderboards! Instead, the <a href="https://github.com/fastai/imagenette">Imagenette repository</a> only maintains leaderboards for Noisy Imagenette (and not Imagewoof) for 5% and 50% noise (24 leaderboards). Just like with the regular Imagenette leaderboards, feel free to send a pull request to the Imagenette repository with your results if it beats the current top score. I have provided a <a href="https://github.com/tmabraham/noisy_imagenette/blob/main/baseline/baseline-01-18-2021.md">baseline</a> which is currently on the leaderboards, as well as a <a href="https://github.com/fastai/imagenette/blob/master/noisy_labels/extended_lb.csv">CSV file</a> with the baseline accuracy for all 96 leaderboards.</p>
+</section>
+<section id="backstory" class="level1">
+<h1>Backstory</h1>
+<p>For some background, I started looking into training with label noise because of the recent Cassava Leaf Disease Kaggle Competition (my team was able win a silver medal, see <a href="https://twitter.com/iScienceLuvr/status/1362879523650330627">here</a>), which had a really noisy dataset. One of the recent techniques I heard about was <a href="https://arxiv.org/abs/2010.01412">SAM</a>, which recently achieved a state-of-the-art score on ImageNet (only to be beaten in a few weeks by techniques/models like Meta Pseudo Labels and NFNets). However, the paper also included some improvements to noisy label training. I had a fastai implementation in-progress for the SAM optimizer (probably will describe in an upcoming blog post) and I wanted to test out its noisy label training capabilities on a dataset. I thought about corrupting the Imagenette labels and use that as my dataset for testing SAM. Jeremy Howard suggested adding it to the main Imagenette dataset and here we are!</p>
+</section>
+<section id="closing-remarks" class="level1">
+<h1>Closing Remarks</h1>
+<p>In conclusion, I hope that this Noisy Imagenette datasets serves as a useful benchmarking dataset for machine learning community when it comes to testing and comparing techniques for training on noisy labels. I hope to experiment with some of these techniques like SAM, the different loss functions, etc. and record those results over on this blog, so be sure to keep an eye on this blog, or follow me on <a href="https://twitter.com/iScienceLuvr">Twitter</a> to get the latest updates!</p>
+</section>
+<section id="acknowledgments" class="level1">
+<h1>Acknowledgments</h1>
+<p>I’d like to thank Jeremy Howard and especially Hamel Husain for adding the Noisy Imagenette dataset. I also would like to thank Hamel Husain for reviewing my blog post and providing feedback. I’d like to thank Isaac Flath for pointing out an error I originally had when generating the dataset.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.101">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Hamel Husain &amp; Jeremy Howard">
+<meta name="description" content="How a new GitHub feature makes literate programming easier than ever before.">
+
+<title>tanishq_blog - nbdev + GitHub Codespaces: A New Literate Programming Environment</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">tanishq_blog</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">nbdev + GitHub Codespaces: A New Literate Programming Environment</h1>
+                  <div>
+        <div class="description">
+          How a new GitHub feature makes literate programming easier than ever before.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">codespaces</div>
+                <div class="quarto-category">nbdev</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p><a href="https://twitter.com/HamelHusain">Hamel Husain</a> &amp; <a href="https://twitter.com/jeremyphoward">Jeremy Howard</a> </p>
+            </div>
+    </div>
+      
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p><strong>Today, we are going to show you how to set up a literate programming environment, allowing you to use an IDE (VS Code) and an interactive computing environment (Jupyter), without leaving your browser, for free, in under 5 minutes. You’ll even see how VSCode and Jupyter work together automatically!</strong> But first, what is literate programming? And how did I go from skeptic to a zealot of literate programming?</p>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<blockquote class="blockquote">
+<p>Literate programming is a programming paradigm introduced by <a href="https://en.wikipedia.org/wiki/Donald_Knuth">Donald Knuth</a> in which a computer program is given an explanation of its logic in a natural language, such as English, interspersed with snippets of macros and traditional source code, from which compilable source code can be generated. According to Knuth, literate programming provides higher-quality programs by forcing programmers to explicitly state the thoughts behind the program. This process makes poorly thought-out design decisions more obvious. Knuth also claims that literate programming provides a first-rate documentation system, which is not an add-on, but is grown naturally in the process of exposition of one’s thoughts during a program’s creation. <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+</blockquote>
+<p>When I first learned about literate programming, I was quite skeptical. For the longest time, I had wrongly equated <a href="https://jupyter.org/">Jupyter notebooks</a> with literate programming. Indeed, Jupyter is a brilliant interactive computing system, which was awarded the Association of Computing Machinery (ACM) <a href="https://blog.jupyter.org/jupyter-receives-the-acm-software-system-award-d433b0dfe3a2">Software System Award</a>, and is loved by many developers. However, Jupyter falls short of the literate programming paradigm for the following reasons:<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<ul>
+<li>It can be difficult to compile source code from notebooks.</li>
+<li>It can be difficult to diff and use version control with notebooks because they are not stored in plain text.</li>
+<li>It is not clear how to automatically generate documentation from notebooks.</li>
+<li>It is not clear how to properly run tests suites when writing code in notebooks.</li>
+</ul>
+<p>My skepticism quickly evaporated when I began using <a href="https://nbdev.fast.ai/">nbdev</a>, a project that extends notebooks to complete the literate programming ideal. I spent a month, full time, using nbdev while contributing to the python library <a href="https://github.com/fastai/fastcore">fastcore</a>, and can report that Donald Knuth was definitely onto something. The process of writing prose and tests alongside code forced me to deeply understand why the code does what it does, and to think deeply about its design. Furthermore, the reduced cognitive load and speed of iteration of having documentation, code, and tests in one location boosted my productivity to levels I have never before experienced as a software developer. Furthermore, I found that developing this way bolstered collaboration such that code reviews not only happened faster but were more meaningful. In short, nbdev may be the most profound productivity tool I have ever used.</p>
+<p>As a teaser, look how easy it is to instantiate this literate programming environment, which includes a notebook, a docs site and an IDE with all dependencies pre-installed! :point_down:</p>
+<p>{% include video.html url=“https://github.com/machine-learning-apps/demo-videos/raw/master/codespaces-nbdev/e2e_small.mp4” %}</p>
+<p>
+<br>
+</p>
+</section>
+<section id="features-of-nbdev" class="level2">
+<h2 class="anchored" data-anchor-id="features-of-nbdev">Features of nbdev</h2>
+<p>As discussed in the <a href="https://nbdev.fast.ai/">docs</a>, nbdev provides the following features:</p>
+<ul>
+<li>Searchable, hyperlinked documentation, which can be automatically hosted on <a href="https://docs.github.com/en/github/working-with-github-pages">GitHub Pages</a> for free.</li>
+<li>Python modules, following best practices such as <a href="http://xion.io/post/code/python-all-wild-imports.html">automatically defining <code>__all__</code></a> with your exported functions, classes, and variables.</li>
+<li>Pip and Conda installers.</li>
+<li>Tests defined directly in notebooks which run in parallel. This testing system has been thoroughly tested with <a href="https://github.com/features/actions">GitHub Actions</a>.</li>
+<li>Navigate and edit your code in a standard text editor or IDE, and export any changes automatically back into your notebooks.</li>
+</ul>
+<p>Since you are in a notebook, you can also add charts, text, links, images, videos, etc, that are included automatically in the documentation of your library, along with standardized documentation generated automatically from your code. <a href="https://docs.fast.ai/">This site</a> is an example of docs generated automatically by nbdev.</p>
+</section>
+<section id="github-codespaces" class="level2">
+<h2 class="anchored" data-anchor-id="github-codespaces">GitHub Codespaces</h2>
+<p>Thanks to <a href="https://docs.conda.io/en/latest/">Conda</a> and <a href="https://github.com/fastai/nbdev_template">nbdev_template</a>, setting up a development environment with nbdev is far easier than it used to be. However, we realized it could be even easier, thanks to a new GitHub product called <a href="https://github.com/features/codespaces">Codespaces</a>. Codespaces is a fully functional development environment in your browser, accessible directly from GitHub, that provides the following features:</p>
+<ol type="1">
+<li>A full VS Code IDE.</li>
+<li>An environment that has files from the repository mounted into the environment, along with your GitHub credentials.</li>
+<li>A development environment with dependencies pre-installed, backed by <a href="https://www.docker.com/">Docker</a>.</li>
+<li>The ability to serve additional applications on arbitrary ports. For nbdev, we serve a Jupyter notebook server as well as a <a href="https://jekyllrb.com/">Jekyll</a> based documentation site.</li>
+<li>A shared file system, which facilitates editing code in one browser tab and rendering the results in another.</li>
+<li>… <a href="https://docs.github.com/en/github/developing-online-with-codespaces">and more</a>.</li>
+</ol>
+<p>Codespaces enables developers to immediately participate in a project without wasting time on DevOps or complicated setup steps. Most importantly, CodeSpaces with nbdev allows developers to quickly get started with creating their own software with literate programming.</p>
+</section>
+<section id="a-demo-of-nbdev-codespaces" class="level2">
+<h2 class="anchored" data-anchor-id="a-demo-of-nbdev-codespaces">A demo of nbdev + Codespaces</h2>
+<p>This demo uses the project <a href="https://github.com/fastai/fastcore">fastai/fastcore</a>, which was built with nbdev, as an example. First, we can navigate to this repo and launch a Codespace:</p>
+<p>{% include video.html url=“https://github.com/machine-learning-apps/demo-videos/raw/master/codespaces-nbdev/1_open.mp4” %}</p>
+<p>
+<br>
+</p>
+<p>If you are launching a fresh Codespace, it may take several minutes to set up. Once the environment is ready, we can verify that all dependencies we want are installed (in this case <code>fastcore</code> and <code>nbdev</code>):</p>
+<p>{% include video.html url=“https://github.com/machine-learning-apps/demo-videos/raw/master/codespaces-nbdev/2_verify.mp4” %}</p>
+<p>
+<br>
+</p>
+<p>Additionally, we can serve an arbitrary number of applications on user-specified ports, which we can open through VSCode as shown below:</p>
+<p>{% include video.html url=“https://github.com/machine-learning-apps/demo-videos/raw/master/codespaces-nbdev/3_nb_small.mp4” %}</p>
+<p>
+<br>
+</p>
+<p>In this case, these applications are a notebook and docs site. Changes to a notebook are reflected immediately in the data docs. Furthermore, we can use the cli command <code>nbdev_build_lib</code> to sync our notebooks with python modules. This functionality is shown below:</p>
+<p>{% include video.html url=“https://github.com/machine-learning-apps/demo-videos/raw/master/codespaces-nbdev/4_reload_small.mp4” %}</p>
+<p>
+<br>
+</p>
+<p>This is amazing! With a click of a button, I was able to:</p>
+<ol type="1">
+<li>Launch an IDE with all dependencies pre-installed.</li>
+<li>Launch two additional applications: a Jupyter Notebook server on port 8080 and a docs site on port 4000.</li>
+<li>Automatically update the docs and modules every time I make a change to a Jupyter notebook.</li>
+</ol>
+<p>This is just the tip of the iceberg. There are additional utilities for <a href="https://nbdev.fast.ai/test.html">writing and executing tests</a>, <a href="https://nbdev.fast.ai/sync.html#Diff-notebook---library">diffing notebooks</a>, <a href="https://nbdev.fast.ai/magic_flags.html#How-do-comment-flags-correspond-to-magic-flags?">special flags</a> for hiding, showing, and collapsing cells in the generated docs, as well as <a href="https://nbdev.fast.ai/cli.html#nbdev_install_git_hooks">git hooks</a> for automation. This and more functionality is covered in <a href="https://nbdev.fast.ai/">the nbdev docs</a>.</p>
+</section>
+<section id="give-it-a-try-for-yourself" class="level2">
+<h2 class="anchored" data-anchor-id="give-it-a-try-for-yourself">Give It A Try For Yourself</h2>
+<p>To try out nbdev yourself, <a href="https://nbdev.fast.ai/tutorial.html">take this tutorial</a>, which will walk you through everything you need to know. The tutorial also shows you how to use a repository template with the configuration files necessary to enable Codespaces with nbdev.</p>
+</section>
+<section id="you-can-write-blogs-with-notebooks-too" class="level2">
+<h2 class="anchored" data-anchor-id="you-can-write-blogs-with-notebooks-too">You Can Write Blogs With Notebooks, Too!</h2>
+<p>This blog post was written in <a href="https://github.com/fastai/fastpages">fastpages</a> which is also built on nbdev! We recommend <a href="https://github.com/fastai/fastpages">fastpages</a> if you want an easy way to blog with Jupyter notebooks.</p>
+</section>
+<section id="additional-resources" class="level2">
+<h2 class="anchored" data-anchor-id="additional-resources">Additional Resources</h2>
+<ol type="1">
+<li>The <a href="https://github.com/features/codespaces">GitHub Codepaces site</a>.</li>
+<li>The official <a href="https://docs.github.com/en/github/developing-online-with-codespaces">docs for Codespaces</a>.</li>
+<li>The nbdev <a href="https://nbdev.fast.ai/">docs</a>.</li>
+<li>The nbdev <a href="https://github.com/fastai/nbdev">GitHub repo</a>.</li>
+<li><a href="https://github.com/fastai/fastpages">fastpages</a>: The project used to write this blog.</li>
+<li>The GitHub repo <a href="https://github.com/fastai/fastcore">fastai/fastcore</a>, which is what we used in this blog post as an example.</li>
+</ol>
+<hr>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Wikipedia article: <a href="https://en.wikipedia.org/wiki/Literate_programming">Literate Programming</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>This is not a criticism of Jupyter. Jupyter doesn’t claim to be a full literate programming system. However, people can sometimes (unfairly) judge Jupyter according to this criteria.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
